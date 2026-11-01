@@ -72,7 +72,12 @@ describe('GET /l/:slug', () => {
     await createLanding(t.db, input({ slides: [slide({ type: 'emphasis_text', text: evil })] as LandingInput['slides'] }));
     const res = await getPage('/l/vivienda');
     expect(res.body).not.toContain(evil);
-    expect((res.body.match(/<script/g) ?? []).length).toBe(1); // solo la isla JSON (sin bundle en pruebas)
+    // Cada <script> abierto tiene exactamente un cierre: el texto hostil no añadió etiquetas.
+    const opens = (res.body.match(/<script/g) ?? []).length;
+    const closes = (res.body.match(/<\/script>/g) ?? []).length;
+    expect(opens).toBe(closes);
+    expect(res.body.match(/<script type="application\/json"/g)?.length).toBe(1);
+    expect(res.body).not.toContain('<script>alert');
     const json = /<script type="application\/json" id="__DECK__">([\s\S]*?)<\/script>/.exec(res.body)![1];
     expect(JSON.parse(json).slides[0].text).toBe(evil);
   });
