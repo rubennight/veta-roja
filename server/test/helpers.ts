@@ -3,6 +3,7 @@ import { sql } from 'drizzle-orm';
 import path from 'node:path';
 import os from 'node:os';
 import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { buildApp } from '../src/app';
 import { createDb, runMigrations, type Db } from '../src/db/client';
 import type { Config } from '../src/config';
@@ -28,6 +29,7 @@ export async function makeTestApp(overrides: Partial<Config> = {}): Promise<Test
     databaseUrl: url,
     publicBaseUrl: 'https://vetaroja.mx',
     uploadsDir: fs.mkdtempSync(path.join(os.tmpdir(), 'vr-uploads-')),
+    webDir: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../web'),
     isProd: false,
     ...overrides,
   };

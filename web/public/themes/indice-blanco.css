@@ -20,7 +20,21 @@
   --font-label: 'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
 }
 
-[data-theme="indice-blanco"] .slide { border-bottom: var(--border); font-size: clamp(15px, 1.5vw + 8px, 20px); line-height: 1.6; }
+/* Barra superior con la marca, como en el sitio de referencia. */
+[data-theme="indice-blanco"]::before {
+  content: 'VETA ROJA';
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: block;
+  background: var(--bg);
+  border-bottom: var(--border);
+  padding: 14px var(--gutter);
+  font: 700 18px var(--font-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+[data-theme="indice-blanco"] .slide { scroll-margin-top: 0; border-bottom: var(--border); font-size: clamp(15px, 1.5vw + 8px, 20px); line-height: 1.6; }
 [data-theme="indice-blanco"] ::selection { background: var(--accent-2); color: #fff; }
 
 [data-theme="indice-blanco"] .slide-title,

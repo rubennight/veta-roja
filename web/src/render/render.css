@@ -14,6 +14,8 @@
  * Este archivo solo da el esqueleto (distribución, desplazamiento y animación de entrada).
  */
 
+html, body { margin: 0; }
+
 .deck {
   --gutter: clamp(20px, 5vw, 72px);
   height: 100dvh;
@@ -68,7 +70,14 @@
 .deck.js .slide[data-animation="underline"]:not(.is-visible) .slide-inner { opacity: 1; }
 .slide[data-animation="underline"] .slide-title,
 .slide[data-animation="underline"] .concept-term,
-.slide[data-animation="underline"] .slide-text { background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 0% 0.12em; transition: background-size 0.9s ease; }
+.slide[data-animation="underline"] .slide-text {
+  /* Longhands: no pisan el background-color que define el theme. */
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 0.12em;
+  transition: background-size 0.9s ease;
+}
 .slide[data-animation="underline"].is-visible .slide-title,
 .slide[data-animation="underline"].is-visible .concept-term,
 .slide[data-animation="underline"].is-visible .slide-text { background-size: 100% 0.12em; }
