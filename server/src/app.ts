@@ -4,6 +4,7 @@ import type { Config } from './config';
 import type { Db } from './db/client';
 import { registerAuth } from './auth/routes';
 import { registerLandingRoutes } from './landings/routes';
+import { registerImageRoutes } from './images/routes';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -24,6 +25,7 @@ export async function buildApp(deps: { db: Db; config: Config }): Promise<Fastif
 
   await registerAuth(app);
   await registerLandingRoutes(app);
+  await registerImageRoutes(app);
 
   return app;
 }

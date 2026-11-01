@@ -1,4 +1,4 @@
-import { jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { integer, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import type { Slide } from '@veta-roja/shared';
 
 export const users = pgTable('users', {
@@ -34,6 +34,15 @@ export const slugRedirects = pgTable('slug_redirects', {
   landingId: uuid('landing_id')
     .notNull()
     .references(() => landings.id, { onDelete: 'cascade' }),
+});
+
+export const images = pgTable('images', {
+  id: uuid('id').primaryKey(),
+  file: text('file').notNull(),
+  width: integer('width').notNull(),
+  height: integer('height').notNull(),
+  bytes: integer('bytes').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const settings = pgTable('settings', {

@@ -15,6 +15,13 @@
       "when": 1793576552606,
       "tag": "0001_landings",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793576648506,
+      "tag": "0002_images",
+      "breakpoints": true
     }
   ]
 }
