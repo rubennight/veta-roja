@@ -6,6 +6,10 @@ import fs from 'node:fs';
 import { buildApp } from '../src/app';
 import { createDb, runMigrations, type Db } from '../src/db/client';
 import type { Config } from '../src/config';
+import { createAdmin } from '../src/auth/password';
+import { createSession } from '../src/auth/sessions';
+import { users } from '../src/db/schema';
+import { eq } from 'drizzle-orm';
 
 export interface TestApp {
   app: FastifyInstance;
@@ -46,4 +50,11 @@ export async function makeTestApp(overrides: Partial<Config> = {}): Promise<Test
       await close();
     },
   };
+}
+
+/** Crea un admin y una sesión directamente (sin pasar por el login limitado) y devuelve las cookies. */
+export async function loginAsAdmin(t: TestApp): Promise<{ vr_session: string }> {
+  await createAdmin(t.db, 'admin', 'contraseña-muy-larga-123');
+  const [user] = await t.db.select().from(users).where(eq(users.username, 'admin'));
+  return { vr_session: await createSession(t.db, user.id) };
 }
