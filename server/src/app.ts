@@ -2,6 +2,7 @@ import Fastify, { type FastifyInstance } from 'fastify';
 import { sql } from 'drizzle-orm';
 import type { Config } from './config';
 import type { Db } from './db/client';
+import { registerAuth } from './auth/routes';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -11,7 +12,7 @@ declare module 'fastify' {
 }
 
 export async function buildApp(deps: { db: Db; config: Config }): Promise<FastifyInstance> {
-  const app = Fastify({ logger: false });
+  const app = Fastify({ logger: false, trustProxy: deps.config.isProd });
   app.decorate('db', deps.db);
   app.decorate('config', deps.config);
 
@@ -19,6 +20,8 @@ export async function buildApp(deps: { db: Db; config: Config }): Promise<Fastif
     await deps.db.execute(sql`select 1`);
     return { ok: true };
   });
+
+  await registerAuth(app);
 
   return app;
 }
