@@ -1,0 +1,87 @@
+/*
+ * ESTRUCTURA COMÚN DE LAS LANDINGS (sin colores ni tipografías de marca).
+ *
+ * CONTRATO DE THEME
+ * -----------------
+ * Cada theme es web/public/themes/<id>.css y debe:
+ *  1. Poner TODAS sus reglas bajo [data-theme="<id>"] (el <main class="deck"> lleva ese atributo).
+ *  2. Definir las variables: --bg --fg --accent --accent-2 --muted --border --font-display --font-body.
+ *  3. Estilizar: .deck, .slide, [data-slide-type="..."], .btn-cta, .progress, y los elementos
+ *     internos (.slide-title, .slide-subtitle, .slide-text, .slide-quote, .concept-box,
+ *     .figure-number, .timeline, .compare-col, .gallery, mark, strong).
+ *  4. Cargar sus fuentes con @font-face apuntando a /fonts/*.woff2 (sin URLs externas).
+ *
+ * Este archivo solo da el esqueleto (distribución, desplazamiento y animación de entrada).
+ */
+
+.deck {
+  --gutter: clamp(20px, 5vw, 72px);
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y proximity;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-text-size-adjust: 100%;
+}
+.preview-frame .deck { height: 100%; }
+
+.slide {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--gutter);
+  scroll-snap-align: start;
+  position: relative;
+  overflow-wrap: anywhere;
+}
+.preview-frame .slide { min-height: 100%; }
+.slide-inner { width: 100%; max-width: 1180px; margin-inline: auto; position: relative; z-index: 1; }
+
+/* ---- Distribución por tipo ---- */
+.cover-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 3vw, 32px); }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 40px); }
+.compare ul { margin: 0; padding-left: 1.2em; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(12px, 2vw, 24px); }
+.gallery img { width: 100%; height: auto; display: block; }
+.gallery figure { margin: 0; }
+.slide-quote { margin: 0; }
+.slide-quote footer { display: flex; flex-wrap: wrap; gap: 0.5em 1.2em; }
+.slide-quote cite { font-style: normal; }
+.btn-cta { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; cursor: pointer; }
+.progress { position: sticky; bottom: 0; margin-left: auto; width: max-content; z-index: 5; }
+
+@media (max-width: 720px) {
+  .compare { grid-template-columns: 1fr; }
+}
+
+/* ---- Animación de entrada ----
+ * Sin JavaScript (o antes de hidratar) todo el contenido es visible.
+ * Con JS, el contenido espera a que su diapositiva entre en pantalla.
+ */
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible) .slide-inner { opacity: 0; }
+.slide-inner { transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.deck.js .slide[data-animation="slide-up"]:not(.is-visible) .slide-inner { transform: translateY(40px); }
+.deck.js .slide[data-animation="zoom"]:not(.is-visible) .slide-inner { transform: scale(0.94); }
+.deck.js .slide[data-animation="underline"]:not(.is-visible) .slide-inner { opacity: 1; }
+.slide[data-animation="underline"] .slide-title,
+.slide[data-animation="underline"] .concept-term,
+.slide[data-animation="underline"] .slide-text { background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 0% 0.12em; transition: background-size 0.9s ease; }
+.slide[data-animation="underline"].is-visible .slide-title,
+.slide[data-animation="underline"].is-visible .concept-term,
+.slide[data-animation="underline"].is-visible .slide-text { background-size: 100% 0.12em; }
+.deck:not(.js) .slide[data-animation="underline"] .slide-title,
+.deck:not(.js) .slide[data-animation="underline"] .concept-term,
+.deck:not(.js) .slide[data-animation="underline"] .slide-text { background-size: 100% 0.12em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .deck { scroll-behavior: auto; }
+  .slide-inner, .slide[data-animation] .slide-title, .slide[data-animation] .concept-term, .slide[data-animation] .slide-text {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    background-size: 100% 0.12em !important;
+  }
+}
