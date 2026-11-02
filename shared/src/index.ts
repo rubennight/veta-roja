@@ -3,3 +3,4 @@ export * from './inline';
 export * from './slug';
 export * from './cta';
 export * from './themes';
+export * from './qr';

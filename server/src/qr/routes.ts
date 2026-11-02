@@ -1,6 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { getLanding } from '../landings/repo';
+import { QrStyleSchema } from '@veta-roja/shared';
 import { renderQr } from './render';
 
 const IdParam = z.object({ id: z.string().uuid() });
@@ -16,10 +17,14 @@ export async function registerQrRoutes(app: FastifyInstance): Promise<void> {
       if (!landing) return reply.code(404).send({ error: 'No encontrada' });
 
       const url = `${app.config.publicBaseUrl}/l/${landing.slug}`;
-      const query = req.query as { download?: string; logo?: string };
-      // El martillo y la hoz van por omisión; ?logo=0 los quita.
-      const logo = query.logo !== '0';
-      const body = format === 'svg' ? await renderQr(url, 'svg', { logo }) : await renderQr(url, 'png', { logo });
+      const query = req.query as Record<string, unknown>;
+      // Estilo del QR: forma, colores, emblema… Todo se valida; un valor inválido es un 400, nunca un SVG con texto ajeno.
+      const parsed = QrStyleSchema.safeParse(query);
+      if (!parsed.success) {
+        const issue = parsed.error.issues[0];
+        return reply.code(400).send({ error: `Estilo de QR inválido (${issue.path.join('.') || 'parámetros'}): ${issue.message}` });
+      }
+      const body = format === 'svg' ? await renderQr(url, 'svg', parsed.data) : await renderQr(url, 'png', parsed.data);
       const download = query.download === '1';
       if (download) reply.header('Content-Disposition', `attachment; filename="qr-${landing.slug}.${format}"`);
       return reply

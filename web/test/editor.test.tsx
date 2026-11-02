@@ -13,6 +13,7 @@ const jsonResponse = (status: number, json?: unknown) =>
   new Response(status === 204 ? null : JSON.stringify(json ?? {}), { status, headers: { 'content-type': 'application/json' } });
 
 beforeEach(() => {
+  window.localStorage.clear();
   handlers = {
     'GET /api/auth/me': () => ({ json: { username: 'admin' } }),
     'GET /api/admin/settings/default-cta-url': () => ({ json: { url: null } }),
@@ -110,6 +111,33 @@ describe('crear una landing', () => {
     expect(screen.getByAltText(/código qr/i).getAttribute('src')).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda&logo=0`);
     expect(screen.getByRole('link', { name: 'Descargar PNG' }).getAttribute('href')).toBe(`/api/admin/landings/${ID}/qr.png?download=1&logo=0`);
     expect(screen.getByRole('link', { name: 'Descargar SVG' }).getAttribute('href')).toBe(`/api/admin/landings/${ID}/qr.svg?download=1&logo=0`);
+  });
+
+  it('personalizar el QR: forma, colores y emblema viajan en la imagen y en las descargas', async () => {
+    const user = userEvent.setup();
+    await openExisting();
+    await user.selectOptions(screen.getByLabelText('Forma de los módulos'), 'dots');
+    await user.selectOptions(screen.getByLabelText('Marco de los ojos'), 'circle');
+    await user.selectOptions(screen.getByLabelText('Relleno'), 'linear');
+    const src = () => screen.getByAltText(/código qr/i).getAttribute('src')!;
+    expect(src()).toContain('body=dots');
+    expect(src()).toContain('eyeFrame=circle');
+    expect(src()).toContain('gradient=linear');
+    expect(screen.getByRole('link', { name: 'Descargar SVG' }).getAttribute('href')).toContain('body=dots');
+    expect(screen.getByLabelText('Segundo color del degradado')).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Restablecer estilo' }));
+    expect(src()).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda`);
+  });
+
+  it('avisa cuando los colores del QR dificultan la lectura y recuerda el estilo elegido', async () => {
+    const user = userEvent.setup();
+    await openExisting();
+    expect(screen.queryByText(/poco contraste/i)).toBeNull();
+    await user.click(screen.getByRole('checkbox', { name: /fondo transparente/i }));
+    expect(screen.getByText(/superficie clara/i)).toBeTruthy();
+    cleanup();
+    await openExisting();
+    expect((screen.getByRole('checkbox', { name: /fondo transparente/i }) as HTMLInputElement).checked).toBe(true);
   });
 
   it('el QR de una landing en borrador avisa que no funcionará hasta publicarla', async () => {

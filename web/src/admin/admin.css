@@ -142,3 +142,12 @@ textarea { min-height: 110px; resize: vertical; }
 
 .check { display: flex; align-items: center; gap: 10px; text-transform: none; letter-spacing: 0; font-size: 14px; cursor: pointer; }
 .check input { width: 20px; height: 20px; flex: none; accent-color: var(--a-fg); }
+
+/* Personalización del QR */
+.qr-style { border: var(--a-border); padding: 10px 14px; }
+.qr-style > summary { cursor: pointer; font-weight: 700; }
+.qr-style[open] { display: grid; gap: 12px; }
+.qr-style .group { display: grid; gap: 10px; }
+.color-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.color-field input[type='color'] { width: 56px; height: 36px; padding: 0; flex: none; cursor: pointer; }
+.field input[type='range'] { width: 100%; accent-color: var(--a-fg); }

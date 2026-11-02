@@ -128,3 +128,85 @@ describe('QR de cada landing', () => {
     expect((await get(l.id, 'svg', '', false)).statusCode).toBe(401);
   });
 });
+
+describe('personalización del QR', () => {
+  const URL_ = 'https://vetaroja.mx/l/vivienda';
+  // jsQR es inestable con módulos sueltos (puntos, rombos, barras): según la escala a veces no encuentra los ojos aunque el dibujo
+  // sea correcto. Se exige que alguna de varias resoluciones se lea; un dato mal colocado no se leería en ninguna.
+  const decode = async (id: string, query: string) => {
+    for (const size of [1024, 512, 600, 768, 448, 540, 640, 720, 896, 480, 560, 680]) {
+      const res = await get(id, 'png', `${query}${query ? '&' : '?'}size=${size}`);
+      const text = decodePng(res.rawPayload);
+      if (text) return text;
+    }
+    return undefined;
+  };
+
+  it('el emblema por omisión es el martillo y la hoz rojos del archivo del usuario', async () => {
+    const l = await createLanding(t.db, input());
+    const svg = (await get(l.id, 'svg')).body;
+    expect(svg).toContain('id="martillo-y-hoz"');
+    expect(svg).toContain('#cc0000');
+  });
+
+  it.each(['square', 'rounded', 'dots', 'vertical', 'horizontal'])('forma de módulo "%s" se sigue leyendo', async (body) => {
+    const l = await createLanding(t.db, input());
+    expect(await decode(l.id, `?body=${body}&logo=0`)).toBe(URL_);
+    expect(await decode(l.id, `?body=${body}`)).toBe(URL_);
+  });
+
+  it.each([
+    ['square', 'square'],
+    ['rounded', 'rounded'],
+    ['circle', 'circle'],
+    ['leaf', 'diamond'],
+  ])('ojos "%s" + "%s" se leen', async (eyeFrame, eyeBall) => {
+    const l = await createLanding(t.db, input());
+    expect(await decode(l.id, `?eyeFrame=${eyeFrame}&eyeBall=${eyeBall}&logo=0`)).toBe(URL_);
+  });
+
+  it('colores, degradado y color propio de ojos conservan la lectura', async () => {
+    const l = await createLanding(t.db, input());
+    const q = `?fg=${encodeURIComponent('#7a0000')}&gradient=linear&fg2=${encodeURIComponent('#003366')}&bg=${encodeURIComponent('#fffbe6')}&eyeFrameColor=${encodeURIComponent('#000000')}`;
+    expect(await decode(l.id, q)).toBe(URL_);
+    const radial = await decode(l.id, `?gradient=radial&fg=${encodeURIComponent('#220000')}&fg2=${encodeURIComponent('#000044')}`);
+    expect(radial).toBe(URL_);
+    const svg = (await get(l.id, 'svg', q)).body;
+    expect(svg).toContain('linearGradient');
+    expect(svg).toContain('#fffbe6');
+  });
+
+  it('fondo transparente: el SVG no pinta fondo y el PNG tiene alfa 0 en la esquina', async () => {
+    const l = await createLanding(t.db, input());
+    const svg = (await get(l.id, 'svg', '?bg=none')).body;
+    expect(svg).not.toContain('id="fondo"');
+    const png = PNG.sync.read((await get(l.id, 'png', '?bg=none')).rawPayload);
+    expect(png.data[3]).toBe(0);
+  });
+
+  it('size, margin y logoSize cambian el resultado', async () => {
+    const l = await createLanding(t.db, input());
+    expect(PNG.sync.read((await get(l.id, 'png', '?size=512')).rawPayload).width).toBe(512);
+    const a = (await get(l.id, 'svg', '?margin=2')).body;
+    const b = (await get(l.id, 'svg', '?margin=8')).body;
+    expect(a).not.toBe(b);
+    expect((await get(l.id, 'svg', '?logoSize=12')).body).not.toBe((await get(l.id, 'svg', '?logoSize=26')).body);
+    expect(await decode(l.id, '?logoSize=28&margin=0')).toBe(URL_);
+  });
+
+  it('parámetros inválidos dan 400 con mensaje, no un QR roto ni un 500', async () => {
+    const l = await createLanding(t.db, input());
+    for (const q of ['?body=estrella', '?fg=rojo', '?size=10', '?logoSize=90', '?bg=%23zzzzzz']) {
+      const res = await get(l.id, 'png', q);
+      expect(res.statusCode, q).toBe(400);
+      expect(res.json().error).toBeTruthy();
+    }
+  });
+
+  it('un valor malicioso en un color no llega al SVG', async () => {
+    const l = await createLanding(t.db, input());
+    const res = await get(l.id, 'svg', `?fg=${encodeURIComponent('"/><script>alert(1)</script>')}`);
+    expect(res.statusCode).toBe(400);
+    expect(res.body).not.toContain('<script>');
+  });
+});
