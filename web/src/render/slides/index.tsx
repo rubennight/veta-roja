@@ -6,6 +6,8 @@ type Of<T extends Slide['type']> = Extract<Slide, { type: T }>;
 export interface SlideContext {
   ctaUrl: string | null;
   imageUrl: (imageId: string) => string;
+  /** Desplaza suavemente hasta otra diapositiva de la misma landing (por su id). */
+  goToSlide: (slideId: string) => void;
 }
 
 export function Cover({ slide, ctx }: { slide: Of<'cover'>; ctx: SlideContext }) {
@@ -136,6 +138,71 @@ export function Cta({ slide, ctx }: { slide: Of<'cta'>; ctx: SlideContext }) {
           {slide.buttonLabel}
         </a>
       )}
+    </div>
+  );
+}
+
+export function Buttons({ slide, ctx }: { slide: Of<'buttons'>; ctx: SlideContext }) {
+  return (
+    <div className="slide-inner">
+      {slide.text && (
+        <p className="slide-text">
+          <InlineText text={slide.text} />
+        </p>
+      )}
+      <div className="button-list">
+        {slide.items.map((item, i) => {
+          const t = item.target;
+          if (t.kind === 'slide') {
+            return (
+              <a
+                key={i}
+                className="btn-cta"
+                href={`#s-${t.slideId}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  ctx.goToSlide(t.slideId);
+                }}
+              >
+                {item.label}
+              </a>
+            );
+          }
+          if (t.kind === 'landing') {
+            return (
+              <a key={i} className="btn-cta" href={`/l/${t.slug}`}>
+                {item.label}
+              </a>
+            );
+          }
+          return (
+            <a key={i} className="btn-cta" href={t.url} target="_blank" rel="noopener noreferrer">
+              {item.label}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/** Recuadros que se abren y se cierran. <details> funciona incluso sin JavaScript. */
+export function Expandables({ slide }: { slide: Of<'expandables'> }) {
+  return (
+    <div className="slide-inner">
+      {slide.heading && <h2 className="slide-title">{slide.heading}</h2>}
+      <div className="expandable-list">
+        {slide.items.map((item, i) => (
+          <details key={i} className="expandable">
+            <summary>{item.title}</summary>
+            <div className="expandable-body">
+              <p>
+                <InlineText text={item.body} />
+              </p>
+            </div>
+          </details>
+        ))}
+      </div>
     </div>
   );
 }

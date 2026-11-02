@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { PNG } from 'pngjs';
 import jsQR from 'jsqr';
+import sharp from 'sharp';
 import type { LandingInput } from '@veta-roja/shared';
 import { createLanding, updateLanding } from '../src/landings/repo';
 import { loginAsAdmin, makeTestApp, type TestApp } from './helpers';
@@ -51,6 +52,39 @@ describe('QR de cada landing', () => {
     const png = PNG.sync.read(res.rawPayload);
     expect(png.width).toBe(1024);
     expect(decodePng(res.rawPayload)).toBe('https://vetaroja.mx/l/vivienda');
+  });
+
+  it('por omisión lleva el martillo y la hoz al centro y sigue leyéndose', async () => {
+    const l = await createLanding(t.db, input());
+    const withLogo = await get(l.id, 'png');
+    const plain = await get(l.id, 'png', '?logo=0');
+    expect(decodePng(withLogo.rawPayload)).toBe('https://vetaroja.mx/l/vivienda');
+    expect(decodePng(plain.rawPayload)).toBe('https://vetaroja.mx/l/vivienda');
+    // Mismo tamaño, pero el centro es distinto: ahí está el emblema.
+    const centre = (buf: Buffer) => {
+      const png = PNG.sync.read(buf);
+      let dark = 0;
+      for (let y = 462; y < 562; y++) for (let x = 462; x < 562; x++) if (png.data[(y * png.width + x) * 4] < 100) dark++;
+      return dark;
+    };
+    expect(centre(withLogo.rawPayload)).not.toBe(centre(plain.rawPayload));
+    expect(withLogo.rawPayload.equals(plain.rawPayload)).toBe(false);
+  });
+
+  it('?logo=0 quita el emblema también del SVG, y con emblema el SVG se lee igual', async () => {
+    const l = await createLanding(t.db, input());
+    const withLogo = (await get(l.id, 'svg')).body;
+    expect(withLogo).toContain('id="martillo-y-hoz"');
+    expect((await get(l.id, 'svg', '?logo=0')).body).not.toContain('martillo-y-hoz');
+    const raster = await sharp(Buffer.from(withLogo)).resize(1024, 1024).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const decoded = jsQR(new Uint8ClampedArray(raster.data), raster.info.width, raster.info.height);
+    expect(decoded?.data).toBe('https://vetaroja.mx/l/vivienda');
+  });
+
+  it('el emblema no rompe la lectura con un slug largo', async () => {
+    const slug = 'por-que-la-vivienda-digna-es-una-lucha-de-clase-en-zacatecas';
+    const l = await createLanding(t.db, input({ slug }));
+    expect(decodePng((await get(l.id, 'png')).rawPayload)).toBe(`https://vetaroja.mx/l/${slug}`);
   });
 
   it('el SVG empieza con "<svg" y tiene tipo image/svg+xml', async () => {

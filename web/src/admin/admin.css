@@ -139,3 +139,6 @@ textarea { min-height: 110px; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.check { display: flex; align-items: center; gap: 10px; text-transform: none; letter-spacing: 0; font-size: 14px; cursor: pointer; }
+.check input { width: 20px; height: 20px; flex: none; accent-color: var(--a-fg); }

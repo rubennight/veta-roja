@@ -15,3 +15,14 @@ export function isAllowedCtaUrl(url: string): boolean {
     parsed.password === ''
   );
 }
+
+/** Enlace externo permitido en un botón: solo https y sin credenciales incrustadas. */
+export function isAllowedLinkUrl(url: string): boolean {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  return parsed.protocol === 'https:' && parsed.username === '' && parsed.password === '';
+}

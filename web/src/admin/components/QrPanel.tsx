@@ -13,6 +13,9 @@ interface Props {
 /** El QR de la landing, generado por el servidor, listo para descargar e imprimir. */
 export function QrPanel({ id, slug, status, dirty }: Props) {
   const [copied, setCopied] = useState(false);
+  // Martillo y hoz al centro: por omisión sí; sin él el servidor devuelve el QR liso.
+  const [emblem, setEmblem] = useState(true);
+  const noLogo = emblem ? '' : '&logo=0';
   const base = `/api/admin/landings/${id}`;
   const publicUrl = `${window.location.origin}/l/${slug}`;
 
@@ -28,14 +31,18 @@ export function QrPanel({ id, slug, status, dirty }: Props) {
   return (
     <section className="qr-panel" aria-label="Código QR">
       <h2>Código QR</h2>
-      <img className="qr-image" src={`${base}/qr.png?v=${encodeURIComponent(slug)}`} alt={`Código QR de /l/${slug}`} width={220} height={220} />
+      <img className="qr-image" src={`${base}/qr.png?v=${encodeURIComponent(slug)}${noLogo}`} alt={`Código QR de /l/${slug}`} width={220} height={220} />
+      <label className="check">
+        <input type="checkbox" checked={emblem} onChange={(e) => setEmblem(e.target.checked)} />
+        Martillo y hoz al centro
+      </label>
       <div className="qr-info">
         <p className="qr-url">{publicUrl}</p>
         <div className="qr-actions">
-          <a className="btn solid" href={`${base}/qr.png?download=1`} download>
+          <a className="btn solid" href={`${base}/qr.png?download=1${noLogo}`} download>
             Descargar PNG
           </a>
-          <a className="btn" href={`${base}/qr.svg?download=1`} download>
+          <a className="btn" href={`${base}/qr.svg?download=1${noLogo}`} download>
             Descargar SVG
           </a>
           <button type="button" className="btn" aria-label="Copiar enlace" onClick={copy}>

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isAllowedCtaUrl } from './cta';
+import { isAllowedCtaUrl, isAllowedLinkUrl } from './cta';
 import { isValidSlug } from './slug';
 import { getTheme } from './themes';
 
@@ -17,6 +17,17 @@ const base = {
   hidden: z.boolean().default(false),
   animation: z.enum(ANIMATIONS).default('fade'),
 };
+
+/** A dónde lleva un botón: otra diapositiva de esta landing, otra landing del sitio o un enlace externo. */
+export const ButtonTargetSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('slide'), slideId: z.string().uuid() }),
+  z.object({ kind: z.literal('landing'), slug: z.string().refine(isValidSlug, 'Slug no válido') }),
+  z.object({ kind: z.literal('url'), url: z.string().max(2000).refine(isAllowedLinkUrl, 'El enlace debe ser https') }),
+]);
+export type ButtonTarget = z.infer<typeof ButtonTargetSchema>;
+
+export const MAX_BUTTONS = 12;
+export const MAX_EXPANDABLES = 20;
 
 const Column = z.object({ title: short, points: z.array(short).max(20) });
 
@@ -38,6 +49,18 @@ export const SlideSchema = z.discriminatedUnion('type', [
     images: z.array(z.object({ imageId: z.string().uuid(), caption: optionalShort })).min(1).max(30),
   }),
   z.object({ ...base, type: z.literal('cta'), text: long, buttonLabel: short }),
+  z.object({
+    ...base,
+    type: z.literal('buttons'),
+    text: optionalShort,
+    items: z.array(z.object({ label: short, target: ButtonTargetSchema })).min(1).max(MAX_BUTTONS),
+  }),
+  z.object({
+    ...base,
+    type: z.literal('expandables'),
+    heading: optionalShort,
+    items: z.array(z.object({ title: short, body: long })).min(1).max(MAX_EXPANDABLES),
+  }),
 ]);
 export type Slide = z.infer<typeof SlideSchema>;
 export type SlideType = Slide['type'];
@@ -50,5 +73,20 @@ export const LandingInputSchema = z.object({
   status: z.enum(['draft', 'published']),
   slides: z.array(SlideSchema).max(MAX_SLIDES),
   ctaUrl: z.string().refine(isAllowedCtaUrl, 'El enlace debe ser https de WhatsApp').nullable(),
+}).superRefine((landing, ctx) => {
+  // Un botón hacia otra diapositiva solo sirve si esa diapositiva existe y se publica (no está oculta).
+  const published = new Set(landing.slides.filter((s) => !s.hidden).map((s) => s.id));
+  landing.slides.forEach((slide, i) => {
+    if (slide.type !== 'buttons') return;
+    slide.items.forEach((item, j) => {
+      if (item.target.kind === 'slide' && !published.has(item.target.slideId)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['slides', i, 'items', j, 'target'],
+          message: 'apunta a una diapositiva que no existe o está oculta',
+        });
+      }
+    });
+  });
 });
 export type LandingInput = z.infer<typeof LandingInputSchema>;

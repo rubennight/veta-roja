@@ -24,6 +24,8 @@ export const SLIDE_TYPES: Array<{ type: SlideType; label: string; hint: string }
   { type: 'comparison', label: 'Comparación', hint: 'Dos columnas con título y puntos' },
   { type: 'gallery', label: 'Imagen o galería', hint: 'Imágenes con pie de foto' },
   { type: 'cta', label: 'Llamado a la acción', hint: 'Invitación y botón al canal de WhatsApp' },
+  { type: 'buttons', label: 'Botones', hint: 'Varios botones hacia otras diapositivas, otras landings o enlaces' },
+  { type: 'expandables', label: 'Recuadros desplegables', hint: 'Recuadros que se abren y cierran con una explicación breve' },
 ];
 
 export const slideTypeLabel = (type: SlideType): string => SLIDE_TYPES.find((t) => t.type === type)?.label ?? type;
@@ -53,6 +55,11 @@ export function stateFromLanding(l: Landing): EditorState {
   };
 }
 
+/** Botón nuevo: lleva a otra diapositiva de la misma landing, que todavía hay que elegir. */
+export function newButton() {
+  return { label: 'Saber más', target: { kind: 'slide' as const, slideId: '' } };
+}
+
 /** Diapositiva nueva con contenido de ejemplo válido (la galería necesita al menos una imagen). */
 export function newSlide(type: SlideType): Slide {
   const base = { id: crypto.randomUUID(), hidden: false, animation: 'fade' as const };
@@ -80,6 +87,10 @@ export function newSlide(type: SlideType): Slide {
       return { ...base, type, images: [] };
     case 'cta':
       return { ...base, type, text: 'La historia se hace organizándose. Súmate.', buttonLabel: 'Entrar al canal' };
+    case 'buttons':
+      return { ...base, type, text: '', items: [newButton()] };
+    case 'expandables':
+      return { ...base, type, heading: '', items: [{ title: 'Concepto', body: 'Explicación breve.' }] };
   }
 }
 

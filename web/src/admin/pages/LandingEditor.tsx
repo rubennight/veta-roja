@@ -23,6 +23,10 @@ function describeIssue(issue: ZodIssue): string {
     first === 'slides' && typeof index === 'number'
       ? `Diapositiva ${index + 1}${rest.length ? ` (${rest.join(' › ')})` : ''}`
       : FIELD_NAMES[String(first)] ?? String(first ?? 'Datos');
+  // Botones: destino sin elegir o hacia una diapositiva que ya no existe.
+  if (first === 'slides' && rest.includes('target')) {
+    return `${where}: ${issue.code === 'custom' ? `un botón ${issue.message}` : 'falta elegir el destino de un botón'}`;
+  }
   const empty = issue.code === 'too_small' && 'origin' in issue && issue.origin === 'string';
   const what = empty ? 'es obligatorio' : issue.code === 'too_big' ? 'es demasiado largo' : issue.message;
   return `${where}: ${what}`;

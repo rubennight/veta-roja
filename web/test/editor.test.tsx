@@ -100,6 +100,18 @@ describe('crear una landing', () => {
     expect((post.slides as unknown[]).length).toBe(1);
   });
 
+  it('el QR lleva martillo y hoz por omisión y se puede quitar, también en las descargas', async () => {
+    const user = userEvent.setup();
+    await openExisting();
+    const box = screen.getByRole('checkbox', { name: /martillo y hoz/i }) as HTMLInputElement;
+    expect(box.checked).toBe(true);
+    expect(screen.getByAltText(/código qr/i).getAttribute('src')).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda`);
+    await user.click(box);
+    expect(screen.getByAltText(/código qr/i).getAttribute('src')).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda&logo=0`);
+    expect(screen.getByRole('link', { name: 'Descargar PNG' }).getAttribute('href')).toBe(`/api/admin/landings/${ID}/qr.png?download=1&logo=0`);
+    expect(screen.getByRole('link', { name: 'Descargar SVG' }).getAttribute('href')).toBe(`/api/admin/landings/${ID}/qr.svg?download=1&logo=0`);
+  });
+
   it('el QR de una landing en borrador avisa que no funcionará hasta publicarla', async () => {
     handlers['POST /api/admin/landings'] = (b) => ({ status: 201, json: { ...(b as object), id: ID } });
     handlers[`GET /api/admin/landings/${ID}`] = () => ({ json: landing({ status: 'draft', slides: [] }) });
@@ -225,6 +237,80 @@ describe('lista de diapositivas', () => {
     expect(card.classList.contains('is-leaving')).toBe(true);
     await waitFor(() => expect(headings()).toEqual(['Diapositiva 1 · Portada']));
     vi.unstubAllGlobals();
+  });
+
+  it('agrega una diapositiva de botones con varios destinos y los envía al guardar', async () => {
+    handlers[`PUT /api/admin/landings/${ID}`] = (b) => ({ json: { ...(b as object), id: ID } });
+    const user = userEvent.setup();
+    await openExisting();
+    await addSlide(user, 'buttons');
+    // Se abre sola la diapositiva nueva (la 3).
+    await user.clear(screen.getByLabelText('Texto del botón 1'));
+    await user.type(screen.getByLabelText('Texto del botón 1'), 'Ver el texto');
+    await user.selectOptions(screen.getByLabelText('Destino del botón 1'), 'url');
+    await user.type(screen.getByLabelText('Enlace externo 1'), 'https://www.marxists.org/espanol/');
+
+    await user.click(screen.getByRole('button', { name: 'Agregar botón' }));
+    await user.type(screen.getByLabelText('Texto del botón 2'), 'Más detalle');
+    // Destino por omisión: otra diapositiva de esta landing; se elige la 2.
+    await user.selectOptions(screen.getByLabelText('Diapositiva de destino 2'), screen.getByRole('option', { name: /Diapositiva 2 · Texto con énfasis/ }));
+
+    await user.click(screen.getByRole('button', { name: 'Agregar botón' }));
+    await user.type(screen.getByLabelText('Texto del botón 3'), 'Otra landing');
+    await user.selectOptions(screen.getByLabelText('Destino del botón 3'), 'landing');
+    await user.type(screen.getByLabelText('Dirección de la otra landing 3'), 'vivienda-digna');
+
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    await screen.findByText('Guardado');
+    const put = calls.find((c) => c.key === `PUT /api/admin/landings/${ID}`)!.body as { slides: Array<Record<string, unknown>> };
+    const buttons = put.slides[2] as { type: string; items: Array<{ label: string; target: Record<string, string> }> };
+    expect(buttons.type).toBe('buttons');
+    expect(buttons.items.map((i) => i.label)).toEqual(['Ver el texto', 'Más detalle', 'Otra landing']);
+    expect(buttons.items[0].target).toEqual({ kind: 'url', url: 'https://www.marxists.org/espanol/' });
+    expect(buttons.items[1].target).toEqual({ kind: 'slide', slideId: (put.slides[1] as { id: string }).id });
+    expect(buttons.items[2].target).toEqual({ kind: 'landing', slug: 'vivienda-digna' });
+  });
+
+  it('un botón sin destino elegido no se guarda y lo explica', async () => {
+    const user = userEvent.setup();
+    await openExisting();
+    await addSlide(user, 'buttons');
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    expect(await screen.findByText(/Diapositiva 3.*destino/i)).toBeTruthy();
+    expect(calls.some((c) => c.key.startsWith('PUT'))).toBe(false);
+  });
+
+  it('si se elimina la diapositiva a la que apunta un botón, guardar lo avisa', async () => {
+    const target = slide({ type: 'concept', term: 'Plusvalía', definition: 'x' });
+    const btn = slide({ type: 'buttons', items: [{ label: 'Detalle', target: { kind: 'slide', slideId: (target as { id: string }).id } }] });
+    const user = userEvent.setup();
+    await openExisting({ slides: [btn, target] });
+    await user.click(screen.getByRole('button', { name: 'Eliminar diapositiva 2' }));
+    await waitFor(() => expect(screen.queryByRole('button', { name: /Diapositiva 2/ })).toBeNull());
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    expect(await screen.findByText(/no existe o está oculta/i)).toBeTruthy();
+  });
+
+  it('agrega recuadros desplegables y los envía al guardar', async () => {
+    handlers[`PUT /api/admin/landings/${ID}`] = (b) => ({ json: { ...(b as object), id: ID } });
+    const user = userEvent.setup();
+    await openExisting();
+    await addSlide(user, 'expandables');
+    await user.clear(screen.getByLabelText('Título del recuadro 1'));
+    await user.type(screen.getByLabelText('Título del recuadro 1'), '¿Qué es la plusvalía?');
+    await user.clear(screen.getByLabelText('Texto del recuadro 1'));
+    await user.type(screen.getByLabelText('Texto del recuadro 1'), 'El trabajo no pagado.');
+    await user.click(screen.getByRole('button', { name: 'Agregar recuadro' }));
+    await user.type(screen.getByLabelText('Título del recuadro 2'), 'Valor de uso');
+    await user.type(screen.getByLabelText('Texto del recuadro 2'), 'Utilidad concreta.');
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    await screen.findByText('Guardado');
+    const put = calls.find((c) => c.key === `PUT /api/admin/landings/${ID}`)!.body as { slides: Array<{ type: string; items: unknown[] }> };
+    expect(put.slides[2].type).toBe('expandables');
+    expect(put.slides[2].items).toEqual([
+      { title: '¿Qué es la plusvalía?', body: 'El trabajo no pagado.' },
+      { title: 'Valor de uso', body: 'Utilidad concreta.' },
+    ]);
   });
 
   it('con 30 diapositivas no deja agregar más y lo avisa', async () => {

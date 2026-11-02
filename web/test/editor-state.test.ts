@@ -12,19 +12,21 @@ function withSlides(n: number): EditorState {
 const ids = (s: EditorState) => s.slides.map((x) => x.id);
 
 describe('newSlide', () => {
-  it('cada uno de los 9 tipos nace con datos que pasan SlideSchema (la galería, al añadir una imagen)', () => {
+  it('cada uno de los 11 tipos nace con datos que pasan SlideSchema (la galería con una imagen, el botón con un destino)', () => {
     expect(SLIDE_TYPES.map((t) => t.type).sort()).toEqual(
-      ['big_figure', 'comparison', 'concept', 'cover', 'cta', 'emphasis_text', 'gallery', 'quote', 'timeline'].sort(),
+      ['big_figure', 'buttons', 'comparison', 'concept', 'cover', 'cta', 'emphasis_text', 'expandables', 'gallery', 'quote', 'timeline'].sort(),
     );
     for (const { type } of SLIDE_TYPES) {
       let slide = newSlide(type as SlideType);
       if (slide.type === 'gallery') slide = { ...slide, images: [{ imageId: IMAGE }] };
+      if (slide.type === 'buttons') slide = { ...slide, items: [{ label: 'Más', target: { kind: 'slide', slideId: IMAGE } }] };
       expect(SlideSchema.safeParse(slide).success, type).toBe(true);
     }
   });
 
-  it('la galería vacía todavía no es válida (falta la imagen)', () => {
+  it('la galería vacía y el botón sin destino todavía no son válidos', () => {
     expect(SlideSchema.safeParse(newSlide('gallery')).success).toBe(false);
+    expect(SlideSchema.safeParse(newSlide('buttons')).success).toBe(false);
   });
 
   it('cada diapositiva nueva trae un id distinto, visible y con animación "fade"', () => {

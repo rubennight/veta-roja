@@ -16,8 +16,11 @@ export async function registerQrRoutes(app: FastifyInstance): Promise<void> {
       if (!landing) return reply.code(404).send({ error: 'No encontrada' });
 
       const url = `${app.config.publicBaseUrl}/l/${landing.slug}`;
-      const body = format === 'svg' ? await renderQr(url, 'svg') : await renderQr(url, 'png');
-      const download = (req.query as { download?: string }).download === '1';
+      const query = req.query as { download?: string; logo?: string };
+      // El martillo y la hoz van por omisión; ?logo=0 los quita.
+      const logo = query.logo !== '0';
+      const body = format === 'svg' ? await renderQr(url, 'svg', { logo }) : await renderQr(url, 'png', { logo });
+      const download = query.download === '1';
       if (download) reply.header('Content-Disposition', `attachment; filename="qr-${landing.slug}.${format}"`);
       return reply
         .type(format === 'svg' ? 'image/svg+xml; charset=utf-8' : 'image/png')

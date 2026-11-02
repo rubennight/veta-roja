@@ -97,7 +97,7 @@ export function SlideList({ slides, dispatch }: Props) {
                     options={ANIMATIONS.map((a) => ({ value: a, label: ANIMATION_LABELS[a] }))}
                     onChange={(animation) => dispatch({ type: 'updateSlide', id: slide.id, patch: { animation: animation as Animation } })}
                   />
-                  <SlideFields slide={slide} onChange={(patch) => dispatch({ type: 'updateSlide', id: slide.id, patch })} />
+                  <SlideFields slide={slide} slides={slides} onChange={(patch) => dispatch({ type: 'updateSlide', id: slide.id, patch })} />
                 </div>
               )}
             </li>

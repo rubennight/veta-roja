@@ -134,6 +134,58 @@ describe('SlideDeck: compatible con servidor', () => {
   });
 });
 
+describe('SlideDeck: botones y recuadros desplegables', () => {
+  const detail = one({ type: 'concept', term: 'Plusvalía', definition: 'Trabajo no pagado' });
+  const buttons = one({
+    type: 'buttons',
+    text: '¿Quieres profundizar?',
+    items: [
+      { label: 'Ver la plusvalía', target: { kind: 'slide', slideId: (detail as { id: string }).id } },
+      { label: 'Otra landing', target: { kind: 'landing', slug: 'vivienda-digna' } },
+      { label: 'Leer el texto', target: { kind: 'url', url: 'https://www.marxists.org/espanol/' } },
+    ],
+  });
+  const boxes = one({
+    type: 'expandables',
+    heading: 'Para profundizar',
+    items: [{ title: '¿Qué es la plusvalía?', body: 'El **trabajo** no pagado.' }],
+  });
+
+  it('cada diapositiva tiene un ancla s-<id> y cada botón lleva a donde dice', () => {
+    const { container } = render(deck([buttons, detail]));
+    const sections = container.querySelectorAll('section');
+    expect(sections[1].id).toBe(`s-${(detail as { id: string }).id}`);
+    const links = [...container.querySelectorAll<HTMLAnchorElement>('section[data-slide-type="buttons"] a')];
+    expect(links.map((a) => a.textContent)).toEqual(['Ver la plusvalía', 'Otra landing', 'Leer el texto']);
+    expect(links[0].getAttribute('href')).toBe(`#s-${(detail as { id: string }).id}`);
+    expect(links[1].getAttribute('href')).toBe('/l/vivienda-digna');
+    expect(links[1].getAttribute('target')).toBeNull();
+    expect(links[2].getAttribute('href')).toBe('https://www.marxists.org/espanol/');
+    expect(links[2].getAttribute('target')).toBe('_blank');
+    expect(links[2].getAttribute('rel')).toBe('noopener noreferrer');
+  });
+
+  it('el botón hacia otra diapositiva se desplaza suavemente hasta ella', () => {
+    Element.prototype.scrollIntoView = vi.fn();
+    const { container } = render(deck([buttons, detail]));
+    const link = container.querySelector<HTMLAnchorElement>('section[data-slide-type="buttons"] a')!;
+    const notPrevented = fireEvent.click(link);
+    expect(notPrevented).toBe(false);
+    const spy = Element.prototype.scrollIntoView as unknown as ReturnType<typeof vi.fn>;
+    expect(spy).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+    expect(spy.mock.contexts[0]).toBe(container.querySelectorAll('section')[1]);
+  });
+
+  it('los recuadros son <details> cerrados con su título, y el cuerpo admite negritas', () => {
+    const { container } = render(deck([boxes]));
+    const d = container.querySelector('details.expandable')!;
+    expect(d.hasAttribute('open')).toBe(false);
+    expect(d.querySelector('summary')?.textContent).toBe('¿Qué es la plusvalía?');
+    expect(d.querySelector('.expandable-body strong')?.textContent).toBe('trabajo');
+    expect(container.querySelector('.slide-title')?.textContent).toBe('Para profundizar');
+  });
+});
+
 describe('SlideDeck: revelado y navegación', () => {
   let observed: Element[];
   let trigger: (entries: Array<{ target: Element; isIntersecting: boolean; intersectionRatio: number }>) => void;

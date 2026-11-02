@@ -20,6 +20,8 @@ const samples: Slide[] = [
   },
   { ...base, id: id(), type: 'gallery', images: [{ imageId: id() }] },
   { ...base, id: id(), type: 'cta', text: 'Únete', buttonLabel: 'Entrar al canal' },
+  { ...base, id: id(), type: 'buttons', items: [{ label: 'Más', target: { kind: 'landing', slug: 'otra' } }] },
+  { ...base, id: id(), type: 'expandables', items: [{ title: 'Qué es', body: 'Esto' }] },
 ];
 
 const landing = (slides: unknown[]) => ({
@@ -33,9 +35,9 @@ const landing = (slides: unknown[]) => ({
 });
 
 describe('SlideSchema', () => {
-  it('acepta los 9 tipos con datos mínimos válidos', () => {
+  it('acepta los 11 tipos con datos mínimos válidos', () => {
     for (const s of samples) expect(SlideSchema.safeParse(s).success, s.type).toBe(true);
-    expect(new Set(samples.map((s) => s.type)).size).toBe(9);
+    expect(new Set(samples.map((s) => s.type)).size).toBe(11);
   });
   it('rechaza timeline sin items y gallery sin imágenes', () => {
     expect(SlideSchema.safeParse({ ...samples[5], items: [] }).success).toBe(false);

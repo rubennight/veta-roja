@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Slide } from '@veta-roja/shared';
 import { useReveal } from './useReveal';
-import { BigFigure, Comparison, Concept, Cover, Cta, EmphasisText, Gallery, Quote, Timeline, type SlideContext } from './slides';
+import { BigFigure, Buttons, Comparison, Concept, Cover, Cta, EmphasisText, Expandables, Gallery, Quote, Timeline, type SlideContext } from './slides';
 
 export interface DeckProps {
   slides: Slide[];
@@ -32,6 +32,10 @@ function SlideBody({ slide, ctx }: { slide: Slide; ctx: SlideContext }) {
       return <Gallery slide={slide} ctx={ctx} />;
     case 'cta':
       return <Cta slide={slide} ctx={ctx} />;
+    case 'buttons':
+      return <Buttons slide={slide} ctx={ctx} />;
+    case 'expandables':
+      return <Expandables slide={slide} />;
   }
 }
 
@@ -74,12 +78,19 @@ export function SlideDeck({ slides, ctaUrl, imageUrl, themeId, keyboard = true }
     return () => window.removeEventListener('keydown', onKey);
   }, [goTo, keyboard]);
 
-  const ctx: SlideContext = { ctaUrl, imageUrl };
+  const goToSlide = useCallback(
+    (slideId: string) => {
+      const index = visible.findIndex((s) => s.id === slideId);
+      if (index >= 0) goTo(index);
+    },
+    [visible, goTo],
+  );
+  const ctx: SlideContext = { ctaUrl, imageUrl, goToSlide };
 
   return (
     <main className="deck" data-theme={themeId} ref={rootRef}>
       {visible.map((slide) => (
-        <section key={slide.id} className="slide" data-slide-type={slide.type} data-animation={slide.animation}>
+        <section key={slide.id} id={`s-${slide.id}`} className="slide" data-slide-type={slide.type} data-animation={slide.animation}>
           <SlideBody slide={slide} ctx={ctx} />
         </section>
       ))}

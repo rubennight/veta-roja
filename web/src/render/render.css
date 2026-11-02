@@ -8,7 +8,8 @@
  *  2. Definir las variables: --bg --fg --accent --accent-2 --muted --border --font-display --font-body.
  *  3. Estilizar: .deck, .slide, [data-slide-type="..."], .btn-cta, .progress, y los elementos
  *     internos (.slide-title, .slide-subtitle, .slide-text, .slide-quote, .concept-box,
- *     .figure-number, .timeline, .compare-col, .gallery, mark, strong).
+ *     .figure-number, .timeline, .compare-col, .gallery, mark, strong). Los recuadros desplegables
+ *     (.expandable) y la lista de botones (.button-list) ya traen estilo base con las variables del theme.
  *  4. Cargar sus fuentes con @font-face apuntando a /fonts/*.woff2 (sin URLs externas).
  *
  * Este archivo solo da el esqueleto (distribución, desplazamiento y animación de entrada).
@@ -67,6 +68,42 @@ html, body { margin: 0; }
 
 @media (max-width: 720px) {
   .compare { grid-template-columns: 1fr; }
+}
+
+/* ---- Botones y recuadros desplegables ---- */
+.button-list { display: flex; flex-wrap: wrap; gap: clamp(10px, 2vw, 20px); gap: clamp(10px, 2cqi, 20px); }
+.slide-text + .button-list { margin-top: 1.4em; }
+.expandable-list { display: grid; gap: 12px; }
+.slide-title + .expandable-list { margin-top: 1em; }
+.expandable { border: var(--border); background: var(--bg); color: var(--fg); }
+.expandable summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.8em 1em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.expandable summary::-webkit-details-marker { display: none; }
+.expandable summary::after { content: '+'; flex: none; font-size: 1.5em; line-height: 1; color: var(--accent); transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.expandable[open] summary::after { transform: rotate(45deg); }
+.expandable summary:hover, .expandable summary:focus-visible { color: var(--accent); }
+.expandable-body { padding: 0 1em 1em; line-height: 1.6; font-family: var(--font-body); }
+.expandable-body p { margin: 0; }
+/* Apertura y cierre suaves donde el navegador lo permite; en los demás, abre y cierra al instante. */
+.deck { interpolate-size: allow-keywords; }
+@supports selector(::details-content) {
+  .expandable::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition: block-size 0.35s ease, opacity 0.3s ease, content-visibility 0.35s allow-discrete;
+  }
+  .expandable[open]::details-content { block-size: auto; opacity: 1; }
 }
 
 /* ---- Animaciones de entrada y de salida ----
@@ -131,8 +168,12 @@ html, body { margin: 0; }
 .btn-cta:hover { transform: translateY(-3px) scale(1.03); }
 .btn-cta:active { transform: translateY(0) scale(0.98); }
 
+/* El botón responde al instante aunque su diapositiva lo haya hecho entrar escalonado. */
+.deck.js .slide.is-visible .btn-cta:hover { transition-delay: 0s; transition-duration: 0.2s; }
+
 @media (prefers-reduced-motion: reduce) {
   .deck { scroll-behavior: auto; }
+  .expandable::details-content, .expandable summary::after { transition: none !important; }
   .progress, .btn-cta { animation: none !important; transition: none !important; transform: none !important; }
   .slide-inner, .slide-inner > *, .timeline > li, .gallery > figure, .compare > *,
   .slide[data-animation] .slide-title, .slide[data-animation] .concept-term, .slide[data-animation] .slide-text {
