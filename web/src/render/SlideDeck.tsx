@@ -8,6 +8,8 @@ export interface DeckProps {
   ctaUrl: string | null;
   imageUrl: (imageId: string) => string;
   themeId: string;
+  /** Teclas ↑ ↓ / AvPág / RePág / espacio para cambiar de diapositiva. Se desactiva en la vista previa del panel. */
+  keyboard?: boolean;
 }
 
 function SlideBody({ slide, ctx }: { slide: Slide; ctx: SlideContext }) {
@@ -34,7 +36,7 @@ function SlideBody({ slide, ctx }: { slide: Slide; ctx: SlideContext }) {
 }
 
 /** Landing en forma de presentación: una diapositiva por pantalla, desplazamiento vertical con imán. */
-export function SlideDeck({ slides, ctaUrl, imageUrl, themeId }: DeckProps) {
+export function SlideDeck({ slides, ctaUrl, imageUrl, themeId, keyboard = true }: DeckProps) {
   const visible = slides.filter((s) => !s.hidden);
   const rootRef = useRef<HTMLElement | null>(null);
   const [current, setCurrent] = useState(0);
@@ -49,7 +51,11 @@ export function SlideDeck({ slides, ctaUrl, imageUrl, themeId }: DeckProps) {
   }, []);
 
   useEffect(() => {
+    if (!keyboard) return;
     const onKey = (e: KeyboardEvent) => {
+      // Nunca interferir cuando se está escribiendo en un campo (p. ej. en el editor del panel).
+      const target = e.target as HTMLElement | null;
+      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
       const total = rootRef.current?.querySelectorAll('section.slide').length ?? 0;
       const i = currentRef.current;
       if (['ArrowDown', 'PageDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey)) {
@@ -66,7 +72,7 @@ export function SlideDeck({ slides, ctaUrl, imageUrl, themeId }: DeckProps) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [goTo]);
+  }, [goTo, keyboard]);
 
   const ctx: SlideContext = { ctaUrl, imageUrl };
 

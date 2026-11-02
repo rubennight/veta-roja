@@ -172,6 +172,27 @@ describe('SlideDeck: revelado y navegación', () => {
     expect(sections.every((s) => s.classList.contains('is-visible'))).toBe(true);
   });
 
+  it('el teclado no se secuestra cuando se escribe en un campo (barra espaciadora y flechas)', () => {
+    const { container } = render(deck(all));
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    const spy = Element.prototype.scrollIntoView as unknown as ReturnType<typeof vi.fn>;
+    for (const key of [' ', 'ArrowDown', 'PageDown']) {
+      const notCancelled = fireEvent.keyDown(input, { key });
+      expect(notCancelled, key).toBe(true); // nadie llamó a preventDefault
+    }
+    expect(spy).not.toHaveBeenCalled();
+    expect(container.querySelectorAll('section').length).toBe(all.length);
+    input.remove();
+  });
+
+  it('con keyboard={false} las teclas no mueven la presentación', () => {
+    render(<SlideDeck slides={all} ctaUrl={null} imageUrl={imageUrl} themeId="indice-blanco" keyboard={false} />);
+    const spy = Element.prototype.scrollIntoView as unknown as ReturnType<typeof vi.fn>;
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it('las flechas ↓ y ↑ desplazan a la diapositiva siguiente y anterior', () => {
     const { container } = render(deck(all));
     const sections = container.querySelectorAll('section');

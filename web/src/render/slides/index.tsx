@@ -112,12 +112,14 @@ export function Gallery({ slide, ctx }: { slide: Of<'gallery'>; ctx: SlideContex
   return (
     <div className="slide-inner">
       <div className="gallery">
-        {slide.images.map((img, i) => (
-          <figure key={i}>
-            <img src={ctx.imageUrl(img.imageId)} alt={img.caption ?? ''} loading="lazy" />
-            {img.caption && <figcaption>{img.caption}</figcaption>}
-          </figure>
-        ))}
+        {slide.images
+          .filter((img) => img.imageId !== '')
+          .map((img, i) => (
+            <figure key={i}>
+              <img src={ctx.imageUrl(img.imageId)} alt={img.caption ?? ''} loading="lazy" />
+              {img.caption && <figcaption>{img.caption}</figcaption>}
+            </figure>
+          ))}
       </div>
     </div>
   );

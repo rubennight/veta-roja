@@ -4,6 +4,7 @@ import { api } from './api';
 import { Login } from './pages/Login';
 import { LandingList } from './pages/LandingList';
 import { Settings } from './pages/Settings';
+import { LandingEditor } from './pages/LandingEditor';
 
 /** Deja pasar solo a quien tiene sesión; si no, manda a /login. */
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -67,6 +68,7 @@ export function AdminApp() {
         }
       >
         <Route index element={<LandingList />} />
+        <Route path="/landings/:id" element={<LandingEditor />} />
         <Route path="/settings" element={<Settings />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

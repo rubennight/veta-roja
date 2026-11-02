@@ -18,7 +18,7 @@
 
 [data-theme="cantera-y-tinta"] .slide {
   border-bottom: 10px solid var(--accent);
-  font-size: clamp(17px, 1.4vw + 10px, 22px);
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
   line-height: 1.65;
   background-image: radial-gradient(rgba(58, 26, 26, 0.045) 1px, transparent 1.2px);
   background-size: 5px 5px;
@@ -36,40 +36,40 @@
   letter-spacing: -0.02em;
   margin: 0;
 }
-[data-theme="cantera-y-tinta"] .slide-title { font-size: clamp(40px, 8.6vw, 112px); }
-[data-theme="cantera-y-tinta"] .slide-subtitle { font-style: italic; font-size: clamp(19px, 2.4vw, 30px); margin: 0.9em 0 0; max-width: 34ch; color: var(--accent); }
-[data-theme="cantera-y-tinta"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); line-height: 1.45; margin: 0 0 1.2em; max-width: 40ch; }
+[data-theme="cantera-y-tinta"] .slide-title { font-size: clamp(40px, 8.6vw, 112px); font-size: clamp(40px, 8.6cqi, 112px); }
+[data-theme="cantera-y-tinta"] .slide-subtitle { font-style: italic; font-size: clamp(19px, 2.4vw, 30px); font-size: clamp(19px, 2.4cqi, 30px); margin: 0.9em 0 0; max-width: 34ch; color: var(--accent); }
+[data-theme="cantera-y-tinta"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.45; margin: 0 0 1.2em; max-width: 40ch; }
 [data-theme="cantera-y-tinta"] [data-slide-type="cover"] .slide-title::after { content: ''; display: block; width: 4.5rem; height: 6px; background: var(--accent); margin-top: 0.35em; }
 
 [data-theme="cantera-y-tinta"] mark { background: linear-gradient(transparent 58%, rgba(168, 50, 45, 0.28) 58%); color: inherit; font-weight: 700; padding: 0 0.1em; }
 [data-theme="cantera-y-tinta"] strong { font-weight: 700; }
 
 /* Cita: comillas grandes de imprenta */
-[data-theme="cantera-y-tinta"] .slide-quote { position: relative; padding-left: clamp(0px, 4vw, 56px); }
-[data-theme="cantera-y-tinta"] .slide-quote::before { content: '“'; position: absolute; left: -0.05em; top: -0.35em; font-size: clamp(90px, 16vw, 200px); line-height: 1; color: var(--accent); font-family: var(--font-display); font-weight: 700; }
-[data-theme="cantera-y-tinta"] .slide-quote p { font-size: clamp(28px, 5.2vw, 68px); line-height: 1.12; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 0.7em; position: relative; }
+[data-theme="cantera-y-tinta"] .slide-quote { position: relative; padding-left: clamp(0px, 4vw, 56px); padding-left: clamp(0px, 4cqi, 56px); }
+[data-theme="cantera-y-tinta"] .slide-quote::before { content: '“'; position: absolute; left: -0.05em; top: -0.35em; font-size: clamp(90px, 16vw, 200px); font-size: clamp(90px, 16cqi, 200px); line-height: 1; color: var(--accent); font-family: var(--font-display); font-weight: 700; }
+[data-theme="cantera-y-tinta"] .slide-quote p { font-size: clamp(28px, 5.2vw, 68px); font-size: clamp(28px, 5.2cqi, 68px); line-height: 1.12; font-weight: 700; letter-spacing: -0.015em; margin: 0 0 0.7em; position: relative; }
 [data-theme="cantera-y-tinta"] .slide-quote footer { font-size: 16px; font-style: italic; }
 [data-theme="cantera-y-tinta"] .slide-quote cite { font-weight: 700; }
 [data-theme="cantera-y-tinta"] .slide-quote time { color: var(--muted); }
 
 /* Concepto: nota al margen con filete rojo */
-[data-theme="cantera-y-tinta"] .concept-box { border-left: 8px solid var(--accent); padding: 0.2em 0 0.2em clamp(16px, 3vw, 40px); }
-[data-theme="cantera-y-tinta"] .concept-term { font-size: clamp(32px, 5.6vw, 72px); }
-[data-theme="cantera-y-tinta"] .concept-definition { margin: 0.6em 0 0; font-size: clamp(18px, 2.2vw, 28px); max-width: 44ch; }
+[data-theme="cantera-y-tinta"] .concept-box { border-left: 8px solid var(--accent); padding: 0.2em 0 0.2em clamp(16px, 3vw, 40px); padding: 0.2em 0 0.2em clamp(16px, 3cqi, 40px); }
+[data-theme="cantera-y-tinta"] .concept-term { font-size: clamp(32px, 5.6vw, 72px); font-size: clamp(32px, 5.6cqi, 72px); }
+[data-theme="cantera-y-tinta"] .concept-definition { margin: 0.6em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
 
 /* Cifra */
-[data-theme="cantera-y-tinta"] .figure-number { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: clamp(72px, 21vw, 280px); line-height: 0.85; letter-spacing: -0.04em; margin: 0; }
-[data-theme="cantera-y-tinta"] .figure-caption { font-style: italic; font-size: clamp(18px, 2.4vw, 32px); margin: 0.5em 0 0; max-width: 28ch; }
+[data-theme="cantera-y-tinta"] .figure-number { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: clamp(72px, 21vw, 280px); font-size: clamp(72px, 21cqi, 280px); line-height: 0.85; letter-spacing: -0.04em; margin: 0; }
+[data-theme="cantera-y-tinta"] .figure-caption { font-style: italic; font-size: clamp(18px, 2.4vw, 32px); font-size: clamp(18px, 2.4cqi, 32px); margin: 0.5em 0 0; max-width: 28ch; }
 
 /* Línea de tiempo */
-[data-theme="cantera-y-tinta"] .timeline { border-left: 2px solid var(--fg); padding-left: clamp(18px, 3vw, 40px); }
-[data-theme="cantera-y-tinta"] .timeline time { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 56px); color: var(--accent); line-height: 1; }
+[data-theme="cantera-y-tinta"] .timeline { border-left: 2px solid var(--fg); padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="cantera-y-tinta"] .timeline time { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4.4vw, 56px); font-size: clamp(30px, 4.4cqi, 56px); color: var(--accent); line-height: 1; }
 [data-theme="cantera-y-tinta"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
 
 /* Comparación */
 [data-theme="cantera-y-tinta"] .compare-col { border-top: 6px solid var(--fg); padding-top: 0.6em; }
 [data-theme="cantera-y-tinta"] .compare-right { border-top-color: var(--accent); }
-[data-theme="cantera-y-tinta"] .compare-col h2 { font-size: clamp(26px, 4vw, 52px); }
+[data-theme="cantera-y-tinta"] .compare-col h2 { font-size: clamp(26px, 4vw, 52px); font-size: clamp(26px, 4cqi, 52px); }
 [data-theme="cantera-y-tinta"] .compare-col ul { padding-left: 1.1em; }
 [data-theme="cantera-y-tinta"] .compare-col li { margin-bottom: 0.5em; }
 

@@ -28,6 +28,16 @@ html, body { margin: 0; }
 }
 .preview-frame .deck { height: 100%; }
 
+/*
+ * Unidades de contenedor: los tamaños "vw" se miden contra el ancho del propio deck, así la vista previa
+ * del panel (un deck angosto dentro de la página) se ve igual que en un celular. Cada declaración con vw
+ * va seguida de su versión cqi; un navegador viejo que no la entienda conserva la de vw.
+ */
+.deck { container-type: inline-size; }
+@supports (width: 1cqi) {
+  .deck { --gutter: clamp(20px, 5cqi, 72px); }
+}
+
 .slide {
   min-height: 100dvh;
   box-sizing: border-box;
@@ -43,10 +53,10 @@ html, body { margin: 0; }
 
 /* ---- Distribución por tipo ---- */
 .cover-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 3vw, 32px); }
-.compare { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 40px); }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(16px, 3vw, 32px); gap: clamp(16px, 3cqi, 32px); }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 3vw, 40px); gap: clamp(16px, 3cqi, 40px); }
 .compare ul { margin: 0; padding-left: 1.2em; }
-.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(12px, 2vw, 24px); }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(12px, 2vw, 24px); gap: clamp(12px, 2cqi, 24px); }
 .gallery img { width: 100%; height: auto; display: block; }
 .gallery figure { margin: 0; }
 .slide-quote { margin: 0; }
