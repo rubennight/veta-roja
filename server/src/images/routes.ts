@@ -44,6 +44,7 @@ export async function registerImageRoutes(app: FastifyInstance): Promise<void> {
     const id = randomUUID();
     const fileName = `${id}.webp`;
     await fs.writeFile(path.join(uploadsDir, fileName), processed.data);
+    await fs.writeFile(path.join(uploadsDir, `${id}.jpg`), processed.share);
     await app.db.insert(images).values({
       id,
       file: fileName,

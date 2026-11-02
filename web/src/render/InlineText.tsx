@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
-import { parseInline } from '@veta-roja/shared';
+// Subruta ligera: el índice del paquete trae zod, que no debe viajar a la landing pública.
+import { parseInline } from '@veta-roja/shared/inline';
 
 /** Texto con **negrita** y ==resaltado==. Nunca inserta HTML: React escapa todo lo demás. */
 export function InlineText({ text }: { text: string }) {

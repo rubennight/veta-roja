@@ -70,14 +70,18 @@ export function renderLandingPage(args: {
   assets: Assets;
 }): string {
   const { landing, ctaUrl, baseUrl, assets } = args;
-  const data: PublicDeckData = { slides: landing.slides, ctaUrl, themeId: landing.themeId };
-  const cover = (landing.slides as Slide[]).find((s) => s.type === 'cover' && !s.hidden && s.imageId);
-  const image = cover && cover.type === 'cover' && cover.imageId ? `${baseUrl}/uploads/${cover.imageId}.webp` : null;
+  // Las diapositivas ocultas no se publican: ni en el HTML, ni en los datos de hidratación, ni en la vista previa.
+  const slides = (landing.slides as Slide[]).filter((s) => !s.hidden);
+  const data: PublicDeckData = { slides, ctaUrl, themeId: landing.themeId };
+  const cover = slides.find((s) => s.type === 'cover' && s.imageId);
+  // Para compartir se usa la copia JPEG (WhatsApp y otras apps aceptan JPEG de forma fiable; WebP no siempre).
+  const image = cover && cover.type === 'cover' && cover.imageId ? `${baseUrl}/uploads/${cover.imageId}.jpg` : null;
   const pageUrl = `${baseUrl}/l/${landing.slug}`;
 
   const meta = [
     `<link rel="canonical" href="${esc(pageUrl)}">`,
     '<meta property="og:type" content="website">',
+    '<meta property="og:site_name" content="Veta Roja">',
     `<meta property="og:title" content="${esc(landing.title)}">`,
     landing.description ? `<meta property="og:description" content="${esc(landing.description)}">` : '',
     `<meta property="og:url" content="${esc(pageUrl)}">`,

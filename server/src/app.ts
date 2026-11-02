@@ -2,6 +2,7 @@ import Fastify, { type FastifyInstance } from 'fastify';
 import { sql } from 'drizzle-orm';
 import type { Config } from './config';
 import type { Db } from './db/client';
+import { loggerConfig } from './logging';
 import { registerAuth } from './auth/routes';
 import { registerLandingRoutes } from './landings/routes';
 import { registerImageRoutes } from './images/routes';
@@ -17,7 +18,7 @@ declare module 'fastify' {
 
 export async function buildApp(deps: { db: Db; config: Config }): Promise<FastifyInstance> {
   // En las pruebas (vitest) no se registra nada; en ejecución real se registran peticiones y errores.
-  const app = Fastify({ logger: process.env.VITEST ? false : true, trustProxy: deps.config.isProd });
+  const app = Fastify({ logger: process.env.VITEST ? false : loggerConfig, trustProxy: deps.config.isProd });
   app.decorate('db', deps.db);
   app.decorate('config', deps.config);
 

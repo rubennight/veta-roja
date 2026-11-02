@@ -53,6 +53,7 @@ describe('GET /l/:slug', () => {
     expect(res.body).toContain('<title>Vivienda digna</title>');
     expect(res.body).toContain('<meta property="og:title" content="Vivienda digna">');
     expect(res.body).toContain('<meta property="og:url" content="https://vetaroja.mx/l/vivienda">');
+    expect(res.body).toContain('<meta property="og:site_name" content="Veta Roja">');
     expect(res.body).toContain('<link rel="stylesheet" href="/themes/indice-blanco.css">');
     expect(res.body).toContain('data-theme="indice-blanco"');
     expect(res.body).toContain('¡Vivir trabajando o morir luchando!');
@@ -82,6 +83,34 @@ describe('GET /l/:slug', () => {
     expect(JSON.parse(json).slides[0].text).toBe(evil);
   });
 
+  it('una diapositiva oculta no aparece en el HTML ni en la isla de datos', async () => {
+    await createLanding(
+      t.db,
+      input({
+        slides: [
+          slide({ type: 'cover', title: 'Portada visible' }),
+          slide({ type: 'quote', text: 'SECRETO-OCULTO', hidden: true }),
+        ] as LandingInput['slides'],
+      }),
+    );
+    const res = await getPage('/l/vivienda');
+    expect(res.body).toContain('Portada visible');
+    expect(res.body).not.toContain('SECRETO-OCULTO');
+    const json = /<script type="application\/json" id="__DECK__">([\s\S]*?)<\/script>/.exec(res.body)![1];
+    expect(JSON.parse(json).slides.map((s: { type: string }) => s.type)).toEqual(['cover']);
+  });
+
+  it('la portada oculta no aporta el og:image', async () => {
+    const imageId = crypto.randomUUID();
+    await createLanding(
+      t.db,
+      input({
+        slides: [slide({ type: 'cover', title: 'Oculta', imageId, hidden: true }), slide({ type: 'quote', text: 'Visible' })] as LandingInput['slides'],
+      }),
+    );
+    expect((await getPage('/l/vivienda')).body).not.toContain('og:image');
+  });
+
   it('la isla de datos trae el enlace del canal ya resuelto (el por defecto si la landing no tiene)', async () => {
     await setDefaultCtaUrl(t.db, 'https://whatsapp.com/channel/defecto');
     await createLanding(t.db, input());
@@ -100,7 +129,7 @@ describe('GET /l/:slug', () => {
       input({ slides: [slide({ type: 'cover', title: 'Portada', imageId })] as LandingInput['slides'] }),
     );
     expect((await getPage('/l/vivienda')).body).toContain(
-      `<meta property="og:image" content="https://vetaroja.mx/uploads/${imageId}.webp">`,
+      `<meta property="og:image" content="https://vetaroja.mx/uploads/${imageId}.jpg">`,
     );
     await t.reset();
     await createLanding(t.db, input());

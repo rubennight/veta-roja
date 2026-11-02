@@ -38,6 +38,8 @@ export function LandingEditor() {
   const [errors, setErrors] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  // Lo que hay guardado en el servidor: de ahí sale el QR (no de lo que se está escribiendo).
+  const [persisted, setPersisted] = useState<{ slug: string; status: 'draft' | 'published' } | null>(null);
 
   // Carga la landing existente (no al crear una nueva ni justo después de guardarla por primera vez).
   useEffect(() => {
@@ -49,6 +51,7 @@ export function LandingEditor() {
         if (!alive) return;
         dispatch({ type: 'load', state: stateFromLanding(l) });
         setLandingId(l.id);
+        setPersisted({ slug: l.slug, status: l.status });
         setLoaded(true);
       })
       .catch(() => alive && setErrors(['No se pudo cargar la landing.']));
@@ -78,6 +81,7 @@ export function LandingEditor() {
     setSaving(true);
     try {
       const result = landingId ? await api.updateLanding(landingId, parsed.data) : await api.createLanding(parsed.data);
+      setPersisted({ slug: result.slug, status: result.status });
       if (!landingId) {
         setLandingId(result.id);
         setLoaded(true);
@@ -168,7 +172,9 @@ export function LandingEditor() {
         </div>
 
         <aside className="editor-side">
-          {landingId && <QrPanel id={landingId} slug={state.slug} status={state.status} />}
+          {landingId && persisted && (
+            <QrPanel id={landingId} slug={persisted.slug} status={persisted.status} dirty={state.slug !== persisted.slug} />
+          )}
           <h2>Vista previa</h2>
           <LivePreview state={state} defaultCtaUrl={defaultCtaUrl} />
         </aside>

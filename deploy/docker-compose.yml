@@ -6,10 +6,18 @@
 # Todo vive en este servidor: ninguna parte depende de servicios de terceros en ejecución.
 name: veta-roja
 
+# Los registros del contenedor rotan solos (no crecen sin límite). La aplicación no guarda la IP de los visitantes.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   postgres:
     image: postgres:16
     restart: unless-stopped
+    logging: *logging
     environment:
       POSTGRES_USER: vetaroja
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en deploy/.env}
@@ -27,6 +35,7 @@ services:
       context: ..
       dockerfile: deploy/Dockerfile
     restart: unless-stopped
+    logging: *logging
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,6 +50,7 @@ services:
   caddy:
     image: caddy:2
     restart: unless-stopped
+    logging: *logging
     depends_on:
       - app
     ports:

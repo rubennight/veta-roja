@@ -2,12 +2,16 @@ import { useState } from 'react';
 
 interface Props {
   id: string;
+  /** Slug GUARDADO: el servidor genera el QR a partir de él, no de lo que se está escribiendo. */
   slug: string;
+  /** Estado GUARDADO de la landing. */
   status: 'draft' | 'published';
+  /** Hay cambios sin guardar en la dirección: el QR mostrado todavía es el anterior. */
+  dirty: boolean;
 }
 
 /** El QR de la landing, generado por el servidor, listo para descargar e imprimir. */
-export function QrPanel({ id, slug, status }: Props) {
+export function QrPanel({ id, slug, status, dirty }: Props) {
   const [copied, setCopied] = useState(false);
   const base = `/api/admin/landings/${id}`;
   const publicUrl = `${window.location.origin}/l/${slug}`;
@@ -38,6 +42,11 @@ export function QrPanel({ id, slug, status }: Props) {
             {copied ? 'Copiado' : 'Copiar enlace'}
           </button>
         </div>
+        {dirty && (
+          <p className="admin-hint" role="status">
+            Guarda para actualizar el QR: la dirección cambió y este QR todavía es el anterior.
+          </p>
+        )}
         {status === 'draft' && (
           <p className="admin-error" role="note">
             Esta landing está en borrador: el QR no funcionará hasta publicarla.

@@ -103,6 +103,13 @@ Nota: con `NODE_ENV=production` la cookie de sesión es `secure`, así que el na
 entrar al panel desde `http://localhost` usa el servidor de desarrollo (`npm run start -w server`) en lugar de este compose.
 La prueba de humo sí funciona contra `http://localhost` porque envía la cookie a mano.
 
+## Privacidad y registros
+
+- El sitio no recoge datos personales y la aplicación **no guarda la IP** de los visitantes en sus registros (solo método y dirección, para diagnosticar errores).
+- Los registros de los contenedores rotan solos (3 archivos de 10 MB).
+- Caddy no registra accesos a menos que le agregues la directiva `log`. Si la agregas, esos registros sí incluirán IPs: defínele una retención.
+- En `deploy/.env`, usa una `POSTGRES_PASSWORD` solo con letras y números (los símbolos como `@ / # :` rompen la dirección de la base de datos).
+
 ## Seguridad
 
 - Deja abiertos solo los puertos 80 y 443. La aplicación (`app:3000`) y Postgres no se publican fuera de Docker.

@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "src/index.ts",
   "scripts": {
     "test": "vitest run"
   },
@@ -13,5 +12,10 @@
   },
   "dependencies": {
     "zod": "^4.6.7"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./inline": "./src/inline.ts"
   }
 }

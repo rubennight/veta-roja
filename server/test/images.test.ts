@@ -85,6 +85,26 @@ describe('subida de imágenes', () => {
   });
 });
 
+describe('copia para compartir', () => {
+  it('además del WebP guarda un JPEG de hasta 1200 px de ancho, servido como image/jpeg', async () => {
+    const res = await upload(await solid(3000, 1500).png().toBuffer(), 'grande.png', 'image/png');
+    const { id } = res.json();
+    const meta = await sharp(path.join(t.config.uploadsDir, `${id}.jpg`)).metadata();
+    expect(meta.format).toBe('jpeg');
+    expect(meta.width).toBe(1200);
+    const served = await t.app.inject({ method: 'GET', url: `/uploads/${id}.jpg` });
+    expect(served.statusCode).toBe(200);
+    expect(served.headers['content-type']).toBe('image/jpeg');
+  });
+
+  it('una imagen con transparencia se aplana sobre blanco en el JPEG (sin fondo negro)', async () => {
+    const png = await sharp({ create: { width: 40, height: 40, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } }).png().toBuffer();
+    const { id } = (await upload(png, 't.png', 'image/png')).json();
+    const { data } = await sharp(path.join(t.config.uploadsDir, `${id}.jpg`)).raw().toBuffer({ resolveWithObject: true });
+    expect(data[0]).toBeGreaterThan(240);
+  });
+});
+
 describe('servicio de /uploads', () => {
   it('sirve el archivo con cabecera immutable y tipo image/webp', async () => {
     const { id } = (await upload(await solid(100, 100).png().toBuffer(), 'a.png', 'image/png')).json();

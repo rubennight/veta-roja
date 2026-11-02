@@ -108,8 +108,33 @@ describe('crear una landing', () => {
     await user.type(await screen.findByLabelText('Título de la landing'), 'Vivienda');
     await user.click(screen.getByRole('button', { name: 'Guardar' }));
     expect(await screen.findByText(/no funcionará hasta publicarla/i)).toBeTruthy();
+    // El aviso depende de lo GUARDADO: cambiar el selector no basta, hay que guardar.
+    handlers[`PUT /api/admin/landings/${ID}`] = (b) => ({ json: { ...(b as object), id: ID } });
     await user.selectOptions(screen.getByLabelText('Estado'), 'published');
-    expect(screen.queryByText(/no funcionará hasta publicarla/i)).toBeNull();
+    expect(screen.getByText(/no funcionará hasta publicarla/i)).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    await waitFor(() => expect(screen.queryByText(/no funcionará hasta publicarla/i)).toBeNull());
+  });
+
+  it('el QR muestra la dirección GUARDADA: al editar el slug avisa y solo se actualiza al guardar', async () => {
+    handlers[`PUT /api/admin/landings/${ID}`] = (b) => ({ json: { ...(b as object), id: ID } });
+    const user = userEvent.setup();
+    await openExisting();
+    const qrSrc = () => screen.getByAltText(/código qr/i).getAttribute('src');
+    expect(qrSrc()).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda`);
+
+    const slug = screen.getByLabelText(/dirección/i);
+    await user.clear(slug);
+    await user.type(slug, 'otra-direccion');
+    expect(qrSrc()).toBe(`/api/admin/landings/${ID}/qr.png?v=vivienda`);
+    expect(document.querySelector('.qr-url')!.textContent).toContain('/l/vivienda');
+    expect(screen.getByText(/guarda para actualizar el qr/i)).toBeTruthy();
+
+    await user.click(screen.getByRole('button', { name: 'Guardar' }));
+    await screen.findByText('Guardado');
+    expect(qrSrc()).toBe(`/api/admin/landings/${ID}/qr.png?v=otra-direccion`);
+    expect(document.querySelector('.qr-url')!.textContent).toContain('/l/otra-direccion');
+    expect(screen.queryByText(/guarda para actualizar el qr/i)).toBeNull();
   });
 
   it('no guarda si falta el título y muestra el motivo', async () => {
