@@ -1,0 +1,17 @@
+# Caddy entrega el sitio por HTTPS y se lo pasa a la aplicación.
+# SITE_ADDRESS viene de deploy/.env:  vetaroja.mx  (HTTPS automático)  |  :80  (solo pruebas locales, sin HTTPS)
+{$SITE_ADDRESS:vetaroja.mx} {
+	encode zstd gzip
+
+	# Para usar un certificado propio en lugar de Let's Encrypt, descomenta y monta los archivos en el servicio caddy:
+	# tls /certs/fullchain.pem /certs/privkey.pem
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options SAMEORIGIN
+		-Server
+	}
+
+	reverse_proxy app:3000
+}

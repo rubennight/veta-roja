@@ -1,0 +1,70 @@
+# Veta Roja en un servidor propio: la aplicación, Postgres y Caddy (HTTPS).
+#
+#   cp deploy/.env.example deploy/.env      # y complétalo
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+#
+# Todo vive en este servidor: ninguna parte depende de servicios de terceros en ejecución.
+name: veta-roja
+
+# Los registros del contenedor rotan solos (no crecen sin límite). La aplicación no guarda la IP de los visitantes.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    logging: *logging
+    environment:
+      POSTGRES_USER: vetaroja
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en deploy/.env}
+      POSTGRES_DB: veta_roja
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vetaroja -d veta_roja"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://vetaroja:${POSTGRES_PASSWORD}@postgres:5432/veta_roja
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:?Define PUBLIC_BASE_URL en deploy/.env (p. ej. https://vetaroja.mx)}
+      NODE_ENV: production
+    volumes:
+      - uploads:/data/uploads
+    # Sin "ports": solo Caddy habla con la aplicación (así la IP real del visitante llega por X-Forwarded-For).
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    logging: *logging
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-vetaroja.mx}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  pgdata:
+  uploads:
+  caddy_data:
+  caddy_config:
