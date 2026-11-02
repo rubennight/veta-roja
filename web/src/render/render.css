@@ -69,15 +69,44 @@ html, body { margin: 0; }
   .compare { grid-template-columns: 1fr; }
 }
 
-/* ---- Animación de entrada ----
+/* ---- Animaciones de entrada y de salida ----
  * Sin JavaScript (o antes de hidratar) todo el contenido es visible.
- * Con JS, el contenido espera a que su diapositiva entre en pantalla.
+ * Con JS, cada diapositiva espera a entrar en pantalla (.is-visible) y, al irse, anima su salida hacia
+ * el lado por el que se va (data-exit="up" | "down"). Su contenido entra escalonado, uno tras otro.
  */
-.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible) .slide-inner { opacity: 0; }
-.slide-inner { transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.deck.js .slide[data-animation]:not([data-animation="none"]) .slide-inner { transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible) .slide-inner { opacity: 0; transition-duration: 0.4s; }
 .deck.js .slide[data-animation="slide-up"]:not(.is-visible) .slide-inner { transform: translateY(40px); }
 .deck.js .slide[data-animation="zoom"]:not(.is-visible) .slide-inner { transform: scale(0.94); }
-.deck.js .slide[data-animation="underline"]:not(.is-visible) .slide-inner { opacity: 1; }
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible)[data-exit="up"] .slide-inner { transform: translateY(-40px); }
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible)[data-exit="down"] .slide-inner { transform: translateY(40px); }
+.deck.js .slide[data-animation="zoom"]:not(.is-visible)[data-exit] .slide-inner { transform: scale(0.94); }
+
+/* Contenido escalonado: cada elemento entra un poco después del anterior; al salir se van todos a la vez. */
+.deck.js .slide[data-animation]:not([data-animation="none"]) .slide-inner > *,
+.deck.js .slide[data-animation]:not([data-animation="none"]) :is(.timeline > li, .gallery > figure, .compare > *) {
+  transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible) .slide-inner > *,
+.deck.js .slide[data-animation]:not([data-animation="none"]):not(.is-visible) :is(.timeline > li, .gallery > figure, .compare > *) {
+  opacity: 0;
+  transform: translateY(18px);
+  transition-duration: 0.3s;
+  transition-delay: 0s;
+}
+.deck.js .slide[data-animation="zoom"]:not(.is-visible) .slide-inner > * { transform: scale(0.96); }
+.deck.js .slide[data-animation]:not(.is-visible)[data-exit="up"] .slide-inner > * { transform: translateY(-18px); }
+.slide.is-visible .slide-inner > :nth-child(2) { transition-delay: 0.08s; }
+.slide.is-visible .slide-inner > :nth-child(3) { transition-delay: 0.16s; }
+.slide.is-visible .slide-inner > :nth-child(4) { transition-delay: 0.24s; }
+.slide.is-visible .slide-inner > :nth-child(5) { transition-delay: 0.32s; }
+.slide.is-visible .slide-inner > :nth-child(n+6) { transition-delay: 0.4s; }
+.slide.is-visible :is(.timeline > li, .gallery > figure, .compare > *):nth-child(2) { transition-delay: 0.22s; }
+.slide.is-visible :is(.timeline > li, .gallery > figure, .compare > *):nth-child(3) { transition-delay: 0.34s; }
+.slide.is-visible :is(.timeline > li, .gallery > figure, .compare > *):nth-child(4) { transition-delay: 0.46s; }
+.slide.is-visible :is(.timeline > li, .gallery > figure, .compare > *):nth-child(n+5) { transition-delay: 0.55s; }
+
+/* Subrayado que se dibuja al entrar y se retira al salir. */
 .slide[data-animation="underline"] .slide-title,
 .slide[data-animation="underline"] .concept-term,
 .slide[data-animation="underline"] .slide-text {
@@ -95,9 +124,18 @@ html, body { margin: 0; }
 .deck:not(.js) .slide[data-animation="underline"] .concept-term,
 .deck:not(.js) .slide[data-animation="underline"] .slide-text { background-size: 100% 0.12em; }
 
+/* Contador y botón con movimiento propio. */
+.progress { animation: vr-pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes vr-pop { from { transform: scale(1.35); opacity: 0.4; } to { transform: scale(1); opacity: 1; } }
+.btn-cta { transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.btn-cta:hover { transform: translateY(-3px) scale(1.03); }
+.btn-cta:active { transform: translateY(0) scale(0.98); }
+
 @media (prefers-reduced-motion: reduce) {
   .deck { scroll-behavior: auto; }
-  .slide-inner, .slide[data-animation] .slide-title, .slide[data-animation] .concept-term, .slide[data-animation] .slide-text {
+  .progress, .btn-cta { animation: none !important; transition: none !important; transform: none !important; }
+  .slide-inner, .slide-inner > *, .timeline > li, .gallery > figure, .compare > *,
+  .slide[data-animation] .slide-title, .slide[data-animation] .concept-term, .slide[data-animation] .slide-text {
     transition: none !important;
     transform: none !important;
     opacity: 1 !important;

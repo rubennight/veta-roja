@@ -216,6 +216,17 @@ describe('lista de diapositivas', () => {
     expect(headings()).toEqual(['Diapositiva 1 · Portada', 'Diapositiva 2 · Portada']);
   });
 
+  it('al eliminar una diapositiva la tarjeta anima su salida y luego se quita', async () => {
+    vi.stubGlobal('matchMedia', (q: string) => ({ matches: false, media: q, addEventListener() {}, removeEventListener() {} }));
+    const user = userEvent.setup();
+    await openExisting();
+    await user.click(screen.getByRole('button', { name: 'Eliminar diapositiva 2' }));
+    const card = screen.getByRole('button', { name: 'Diapositiva 2 · Texto con énfasis' }).closest('li')!;
+    expect(card.classList.contains('is-leaving')).toBe(true);
+    await waitFor(() => expect(headings()).toEqual(['Diapositiva 1 · Portada']));
+    vi.unstubAllGlobals();
+  });
+
   it('con 30 diapositivas no deja agregar más y lo avisa', async () => {
     const thirty = Array.from({ length: 30 }, (_, i) => slide({ type: 'emphasis_text', text: `Texto ${i}` }));
     await openExisting({ slides: thirty });

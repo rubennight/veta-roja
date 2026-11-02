@@ -83,7 +83,7 @@ export function SlideDeck({ slides, ctaUrl, imageUrl, themeId, keyboard = true }
           <SlideBody slide={slide} ctx={ctx} />
         </section>
       ))}
-      <nav className="progress" aria-label="Progreso">
+      <nav key={current} className="progress" aria-label="Progreso">
         {Math.min(current + 1, visible.length)}/{visible.length}
       </nav>
     </main>

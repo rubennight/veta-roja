@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTheme } from '@veta-roja/shared';
 import { api, type LandingSummary } from '../api';
+import { EXIT_MS, prefersReducedMotion } from '../motion';
 
 export function LandingList() {
   const [items, setItems] = useState<LandingSummary[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [leavingId, setLeavingId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -22,7 +24,12 @@ export function LandingList() {
     if (!window.confirm(`¿Eliminar la landing "${item.title}"? Su QR dejará de funcionar y no se puede deshacer.`)) return;
     try {
       await api.deleteLanding(item.id);
+      if (!prefersReducedMotion()) {
+        setLeavingId(item.id);
+        await new Promise((resolve) => setTimeout(resolve, EXIT_MS));
+      }
       await load();
+      setLeavingId(null);
     } catch {
       setError('No se pudo eliminar la landing.');
     }
@@ -65,7 +72,7 @@ export function LandingList() {
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.id} className={leavingId === item.id ? 'is-leaving' : undefined}>
                   <td>{item.title}</td>
                   <td>
                     <span className={`pill ${item.status}`}>{item.status === 'published' ? 'Publicada' : 'Borrador'}</span>

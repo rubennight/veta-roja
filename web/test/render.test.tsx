@@ -165,6 +165,24 @@ describe('SlideDeck: revelado y navegación', () => {
     expect(container.querySelector('.progress')?.textContent).toBe(`3/${all.length}`);
   });
 
+  it('la salida: al irse de pantalla pierde .is-visible y marca hacia dónde sale', () => {
+    const { container } = render(deck(all));
+    const sections = container.querySelectorAll('section');
+    act(() => trigger([{ target: sections[1], isIntersecting: true, intersectionRatio: 0.9 }]));
+    expect(sections[1].classList.contains('is-visible')).toBe(true);
+    // Sale por arriba (su borde inferior queda por encima de la parte alta de la ventana).
+    sections[1].getBoundingClientRect = () => ({ top: -500, bottom: 100 }) as DOMRect;
+    act(() => trigger([{ target: sections[1], isIntersecting: true, intersectionRatio: 0.1 }]));
+    expect(sections[1].classList.contains('is-visible')).toBe(false);
+    expect(sections[1].getAttribute('data-exit')).toBe('up');
+    // Sale por abajo.
+    act(() => trigger([{ target: sections[1], isIntersecting: true, intersectionRatio: 0.9 }]));
+    sections[1].getBoundingClientRect = () => ({ top: 700, bottom: 1300 }) as DOMRect;
+    act(() => trigger([{ target: sections[1], isIntersecting: false, intersectionRatio: 0 }]));
+    expect(sections[1].classList.contains('is-visible')).toBe(false);
+    expect(sections[1].getAttribute('data-exit')).toBe('down');
+  });
+
   it('con prefers-reduced-motion todo es visible desde el inicio', () => {
     vi.stubGlobal('matchMedia', (q: string) => ({ matches: true, media: q, addEventListener() {}, removeEventListener() {} }));
     const { container } = render(deck(all));

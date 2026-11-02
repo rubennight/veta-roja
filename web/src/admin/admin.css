@@ -108,3 +108,34 @@ textarea { min-height: 110px; resize: vertical; }
 .qr-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .preview-frame { height: min(70vh, 640px); border: var(--a-border); overflow: hidden; position: relative; }
+
+/* ---- Movimiento del panel: entrada y salida ---- */
+:root { --a-exit: 220ms; --a-ease: cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes a-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes a-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateX(28px) scale(0.98); } }
+@keyframes a-drop { from { opacity: 0; transform: translateY(-8px) scaleY(0.96); } to { opacity: 1; transform: none; } }
+@keyframes a-pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
+
+.admin-main > * { animation: a-in 0.4s var(--a-ease) both; }
+.admin-login .admin-card { animation: a-pop 0.4s var(--a-ease) both; }
+.editor-form > *, .editor-side > * { animation: a-in 0.45s var(--a-ease) both; }
+.editor-form > :nth-child(2), .editor-side > :nth-child(2) { animation-delay: 0.07s; }
+.editor-form > :nth-child(3), .editor-side > :nth-child(3) { animation-delay: 0.14s; }
+.editor-form > :nth-child(n+4) { animation-delay: 0.2s; }
+.slide-card { animation: a-in 0.35s var(--a-ease) both; }
+.slide-card.is-leaving { animation: a-out var(--a-exit) ease-in forwards; pointer-events: none; }
+.slide-card-body { animation: a-drop 0.25s var(--a-ease) both; transform-origin: top; }
+.admin-table tbody tr { animation: a-in 0.35s var(--a-ease) both; }
+.admin-table tbody tr:nth-child(2) { animation-delay: 0.05s; }
+.admin-table tbody tr:nth-child(3) { animation-delay: 0.1s; }
+.admin-table tbody tr:nth-child(4) { animation-delay: 0.15s; }
+.admin-table tbody tr:nth-child(n+5) { animation-delay: 0.2s; }
+.admin-table tbody tr.is-leaving { animation: a-out var(--a-exit) ease-in forwards; pointer-events: none; }
+.admin-error, .admin-ok, .admin-empty, .qr-panel { animation: a-pop 0.3s var(--a-ease) both; }
+.btn { transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.15s var(--a-ease); }
+.btn:not(:disabled):active { transform: scale(0.96); }
+.admin-bar nav a { transition: background-color 0.15s, color 0.15s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
