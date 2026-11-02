@@ -18,6 +18,15 @@ export const FONT_FILES = [
   ['ibm-plex-mono', 'ibm-plex-mono-latin-600-normal.woff2'],
   ['ibm-plex-serif', 'ibm-plex-serif-latin-400-italic.woff2'],
   ['ibm-plex-sans-condensed', 'ibm-plex-sans-condensed-latin-700-normal.woff2'],
+  // Cantera y tinta
+  ['source-serif-4', 'source-serif-4-latin-400-normal.woff2'],
+  ['source-serif-4', 'source-serif-4-latin-400-italic.woff2'],
+  ['source-serif-4', 'source-serif-4-latin-700-normal.woff2'],
+  // Socavón
+  ['barlow-condensed', 'barlow-condensed-latin-700-normal.woff2'],
+  ['barlow-condensed', 'barlow-condensed-latin-800-normal.woff2'],
+  ['barlow', 'barlow-latin-400-normal.woff2'],
+  ['barlow', 'barlow-latin-600-normal.woff2'],
 ];
 
 mkdirSync(out, { recursive: true });
