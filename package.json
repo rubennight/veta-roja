@@ -2,9 +2,14 @@
   "name": "veta-roja",
   "private": true,
   "type": "module",
-  "workspaces": ["shared", "server", "web"],
+  "workspaces": [
+    "shared",
+    "server",
+    "web"
+  ],
   "scripts": {
     "test": "npm test --workspaces --if-present",
-    "build": "npm run build -w web"
+    "build": "npm run build -w web",
+    "smoke": "node deploy/smoke.mjs"
   }
 }
