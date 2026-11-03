@@ -80,4 +80,4 @@
 [data-theme="cianotipo"] .btn-cta:focus-visible { background: #eaf3ff; color: #0d3b78; }
 [data-theme="cianotipo"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
 
-[data-theme="cianotipo"] .slide::after { content: ''; position: absolute; right: 14px; bottom: 14px; width: 46px; height: 46px; border-right: 2px solid #a9d6ff; border-bottom: 2px solid #a9d6ff; pointer-events: none; }
+[data-theme="cianotipo"] .slide::after { content: ''; position: absolute; left: 14px; bottom: 14px; width: 46px; height: 46px; border-left: 2px solid #a9d6ff; border-bottom: 2px solid #a9d6ff; pointer-events: none; }

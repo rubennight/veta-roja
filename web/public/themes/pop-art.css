@@ -19,7 +19,7 @@
 [data-theme="pop-art"] .slide {
   font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
   line-height: 1.6;
-  background-image: radial-gradient(#ff7ab8 22%, transparent 24%); background-size: 22px 22px;
+  background-image: radial-gradient(rgba(255, 122, 184, 0.55) 20%, transparent 22%); background-size: 24px 24px;
 }
 [data-theme="pop-art"] ::selection { background: var(--accent); color: var(--on-accent); }
 [data-theme="pop-art"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
@@ -81,6 +81,9 @@
 [data-theme="pop-art"] .btn-cta:focus-visible { background: #111; color: #ffe14a; }
 [data-theme="pop-art"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
 
+[data-theme="pop-art"] .slide-subtitle, [data-theme="pop-art"] .slide-text, [data-theme="pop-art"] .figure-caption { background: #fff; border: 3px solid #111; padding: 0.45em 0.7em; box-shadow: 4px 4px 0 #111; width: fit-content; color: #111; }
+[data-theme="pop-art"] .figure-number { font-size: clamp(56px, 15cqi, 210px); }
+[data-theme="pop-art"] .slide-quote footer { background: #fff; border: 3px solid #111; padding: 0.3em 0.6em; width: fit-content; color: #111; }
 [data-theme="pop-art"] .slide-quote blockquote, [data-theme="pop-art"] .slide-quote { overflow: visible; }
 [data-theme="pop-art"] .slide-quote p { font-size: clamp(26px, 5cqi, 68px); }
 [data-theme="pop-art"] .slide-quote footer { margin-top: 1.4em; }

@@ -385,7 +385,8 @@ describe('theme y vista previa', () => {
     const options = within(screen.getByLabelText('Theme')).getAllByRole('option').map((o) => o.textContent);
     expect(options).toContain('Índice Papel');
     expect(options).toContain('Socavón');
-    expect(options.length).toBe(6);
+    expect(options).toContain('Pop-art');
+    expect(options.length).toBe(22);
   });
 
   it('la vista previa usa el canal por defecto cuando la landing no tiene enlace propio', async () => {
