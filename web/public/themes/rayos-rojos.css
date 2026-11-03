@@ -1,0 +1,82 @@
+/* THEME: Rayos rojos — rayos desde abajo, estilo del cartel soviético. */
+
+@font-face { font-family: 'Bebas Neue'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/bebas-neue-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="rayos-rojos"] {
+  --bg: #b3141b;
+  --fg: #fff3dc;
+  --accent: #ffd23f;
+  --accent-2: #fff3dc;
+  --on-accent: #3a0508;
+  --muted: #ffd9c7;
+  --border: 3px solid #ffd23f;
+  --font-display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Barlow', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="rayos-rojos"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  background-image: repeating-conic-gradient(from 0deg at 50% 112%, rgba(255, 210, 63, 0.16) 0 6deg, transparent 6deg 12deg);
+}
+[data-theme="rayos-rojos"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="rayos-rojos"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="rayos-rojos"] .slide-title,
+[data-theme="rayos-rojos"] .concept-term,
+[data-theme="rayos-rojos"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; line-height: 0.9;
+  margin: 0;
+}
+[data-theme="rayos-rojos"] .slide-title { font-size: clamp(56px, 15vw, 200px); font-size: clamp(56px, 15cqi, 200px);  }
+[data-theme="rayos-rojos"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="rayos-rojos"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="rayos-rojos"] mark { background: #ffd23f; color: #3a0508; padding: 0 0.2em; font-weight: 700; }
+[data-theme="rayos-rojos"] strong { font-weight: 700; }
+
+/* Cita */
+[data-theme="rayos-rojos"] .slide-quote p { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; line-height: 1; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="rayos-rojos"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="rayos-rojos"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="rayos-rojos"] .concept-box { border: var(--border); background: #7d0d12; padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="rayos-rojos"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="rayos-rojos"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="rayos-rojos"] .figure-number { font-family: var(--font-display); font-weight: 400; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="rayos-rojos"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="rayos-rojos"] .timeline { border-left: 3px solid var(--accent); padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="rayos-rojos"] .timeline time { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="rayos-rojos"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="rayos-rojos"] .compare-col { border: var(--border); background: #7d0d12;  }
+[data-theme="rayos-rojos"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="rayos-rojos"] .compare-right h2 { color: var(--accent); }
+[data-theme="rayos-rojos"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="rayos-rojos"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="rayos-rojos"] .gallery figure { border: var(--border); }
+[data-theme="rayos-rojos"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="rayos-rojos"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; font: 400 26px var(--font-display); text-transform: uppercase; letter-spacing: 0.08em;
+}
+[data-theme="rayos-rojos"] .btn-cta:hover,
+[data-theme="rayos-rojos"] .btn-cta:focus-visible { background: #fff3dc; color: #b3141b; }
+[data-theme="rayos-rojos"] .progress { background: #7d0d12; color: #ffd23f; padding: 8px 16px; font: 400 18px var(--font-display); letter-spacing: 0.12em; border-top: var(--border); border-left: var(--border); }

@@ -1,0 +1,83 @@
+/* THEME: Cianotipo — plano técnico azul con cuadrícula y líneas de cota. */
+
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="cianotipo"] {
+  --bg: #0d3b78;
+  --fg: #eaf3ff;
+  --accent: #a9d6ff;
+  --accent-2: #ffffff;
+  --on-accent: #0d3b78;
+  --muted: #c3dcf7;
+  --border: 1px dashed rgba(234, 243, 255, 0.85);
+  --font-display: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+[data-theme="cianotipo"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.7;
+  background-image: linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+[data-theme="cianotipo"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="cianotipo"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="cianotipo"] .slide-title,
+[data-theme="cianotipo"] .concept-term,
+[data-theme="cianotipo"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.05;
+  margin: 0;
+}
+[data-theme="cianotipo"] .slide-title { font-size: clamp(34px, 8vw, 104px); font-size: clamp(34px, 8cqi, 104px);  }
+[data-theme="cianotipo"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="cianotipo"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="cianotipo"] mark { background: #eaf3ff; color: #0d3b78; padding: 0 0.2em; font-weight: 600; }
+[data-theme="cianotipo"] strong { font-weight: 600; color: #fff; }
+
+/* Cita */
+[data-theme="cianotipo"] .slide-quote p { font-family: var(--font-display); font-weight: 400; line-height: 1.2; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="cianotipo"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="cianotipo"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="cianotipo"] .concept-box { border: var(--border); background: rgba(8, 40, 90, 0.55); padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="cianotipo"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="cianotipo"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="cianotipo"] .figure-number { font-family: var(--font-display); font-weight: 600; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="cianotipo"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="cianotipo"] .timeline { border-left: 1px dashed #eaf3ff; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="cianotipo"] .timeline time { display: block; font-family: var(--font-display); font-weight: 600; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="cianotipo"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="cianotipo"] .compare-col { border: var(--border); background: rgba(8, 40, 90, 0.55);  }
+[data-theme="cianotipo"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="cianotipo"] .compare-right h2 { color: var(--accent); }
+[data-theme="cianotipo"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="cianotipo"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="cianotipo"] .gallery figure { border: var(--border); }
+[data-theme="cianotipo"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="cianotipo"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; border: 1px solid #eaf3ff; font: 600 16px var(--font-display); text-transform: uppercase; letter-spacing: 0.14em;
+}
+[data-theme="cianotipo"] .btn-cta:hover,
+[data-theme="cianotipo"] .btn-cta:focus-visible { background: #eaf3ff; color: #0d3b78; }
+[data-theme="cianotipo"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="cianotipo"] .slide::after { content: ''; position: absolute; right: 14px; bottom: 14px; width: 46px; height: 46px; border-right: 2px solid #a9d6ff; border-bottom: 2px solid #a9d6ff; pointer-events: none; }

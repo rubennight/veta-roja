@@ -1,0 +1,89 @@
+/* THEME: Periódico obrero — portada de periódico con filetes, columnas y capitular. */
+
+@font-face { font-family: 'Playfair Display'; font-weight: 700; font-style: normal; font-display: swap; src: url(/fonts/playfair-display-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Playfair Display'; font-weight: 900; font-style: normal; font-display: swap; src: url(/fonts/playfair-display-latin-900-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/source-serif-4-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 400; font-style: italic; font-display: swap; src: url(/fonts/source-serif-4-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 700; font-style: normal; font-display: swap; src: url(/fonts/source-serif-4-latin-700-normal.woff2) format('woff2'); }
+
+[data-theme="periodico-obrero"] {
+  --bg: #f2eee3;
+  --fg: #1a1a1a;
+  --accent: #b00020;
+  --accent-2: #1a1a1a;
+  --on-accent: #f2eee3;
+  --muted: #4d4a42;
+  --border: 1px solid #1a1a1a;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+}
+
+[data-theme="periodico-obrero"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  border-top: 6px double #1a1a1a; border-bottom: 1px solid #1a1a1a;
+}
+[data-theme="periodico-obrero"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="periodico-obrero"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="periodico-obrero"] .slide-title,
+[data-theme="periodico-obrero"] .concept-term,
+[data-theme="periodico-obrero"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 900; text-transform: none; letter-spacing: -0.01em; line-height: 1;
+  margin: 0;
+}
+[data-theme="periodico-obrero"] .slide-title { font-size: clamp(40px, 10vw, 130px); font-size: clamp(40px, 10cqi, 130px);  }
+[data-theme="periodico-obrero"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="periodico-obrero"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="periodico-obrero"] mark { background: #ffe97a; color: #1a1a1a; padding: 0 0.15em; }
+[data-theme="periodico-obrero"] strong { font-weight: 700; }
+
+/* Cita */
+[data-theme="periodico-obrero"] .slide-quote p { font-family: var(--font-display); font-weight: 700; font-style: italic; line-height: 1.12; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="periodico-obrero"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="periodico-obrero"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="periodico-obrero"] .concept-box { border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; background: transparent; padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="periodico-obrero"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="periodico-obrero"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="periodico-obrero"] .figure-number { font-family: var(--font-display); font-weight: 900; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="periodico-obrero"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); font-style: italic; letter-spacing: 0.02em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="periodico-obrero"] .timeline { border-left: 1px solid #1a1a1a; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="periodico-obrero"] .timeline time { display: block; font-family: var(--font-display); font-weight: 900; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="periodico-obrero"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="periodico-obrero"] .compare-col { border-top: 3px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; background: transparent;  }
+[data-theme="periodico-obrero"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="periodico-obrero"] .compare-right h2 { color: var(--accent); }
+[data-theme="periodico-obrero"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="periodico-obrero"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="periodico-obrero"] .gallery figure { border: var(--border); }
+[data-theme="periodico-obrero"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; font-style: italic; letter-spacing: 0.02em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="periodico-obrero"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; border: 2px solid #1a1a1a; font: 700 18px var(--font-display); text-transform: uppercase; letter-spacing: 0.14em;
+}
+[data-theme="periodico-obrero"] .btn-cta:hover,
+[data-theme="periodico-obrero"] .btn-cta:focus-visible { background: #1a1a1a; color: #f2eee3; }
+[data-theme="periodico-obrero"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="periodico-obrero"] .slide::before { content: 'VETA ROJA · EDICIÓN ESPECIAL'; position: absolute; top: 10px; left: var(--gutter); right: var(--gutter); font: 700 11px var(--font-body); letter-spacing: 0.3em; text-align: center; color: #4d4a42; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px; }
+[data-theme="periodico-obrero"] [data-slide-type="emphasis_text"] .slide-text::first-letter { font-family: var(--font-display); font-weight: 900; float: left; font-size: 3.4em; line-height: 0.85; padding: 0.05em 0.1em 0 0; color: var(--accent); }
+[data-theme="periodico-obrero"] [data-slide-type="emphasis_text"] .slide-text { text-align: justify; hyphens: auto; }
+@container (min-width: 760px) { [data-theme="periodico-obrero"] .slide-text { column-count: 2; column-gap: 2.2em; column-rule: 1px solid #1a1a1a; max-width: 78ch; } }

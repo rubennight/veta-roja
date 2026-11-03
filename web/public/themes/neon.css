@@ -1,0 +1,83 @@
+/* THEME: Neón — morado oscuro con rosa y cian brillantes. */
+
+@font-face { font-family: 'Orbitron'; font-weight: 800; font-style: normal; font-display: swap; src: url(/fonts/orbitron-latin-800-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Orbitron'; font-weight: 700; font-style: normal; font-display: swap; src: url(/fonts/orbitron-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="neon"] {
+  --bg: #1a0b33;
+  --fg: #f4eaff;
+  --accent: #ff3ea5;
+  --accent-2: #38e8ff;
+  --on-accent: #1a0b33;
+  --muted: #cdb9ec;
+  --border: 2px solid #38e8ff;
+  --font-display: 'Orbitron', 'Arial Black', sans-serif;
+  --font-body: 'Barlow', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="neon"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  background-image: radial-gradient(ellipse at 15% 0%, rgba(255, 62, 165, 0.22), transparent 55%), radial-gradient(ellipse at 90% 100%, rgba(56, 232, 255, 0.18), transparent 55%);
+}
+[data-theme="neon"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="neon"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="neon"] .slide-title,
+[data-theme="neon"] .concept-term,
+[data-theme="neon"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1;
+  margin: 0;
+}
+[data-theme="neon"] .slide-title { font-size: clamp(32px, 8vw, 110px); font-size: clamp(32px, 8cqi, 110px); text-shadow: 0 0 12px rgba(255, 62, 165, 0.8), 0 0 36px rgba(255, 62, 165, 0.5); }
+[data-theme="neon"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="neon"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="neon"] mark { background: none; color: #ff3ea5; font-weight: 600; text-shadow: 0 0 10px rgba(255, 62, 165, 0.7); }
+[data-theme="neon"] strong { font-weight: 700; }
+
+/* Cita */
+[data-theme="neon"] .slide-quote p { font-family: var(--font-display); font-weight: 700; line-height: 1.12; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="neon"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="neon"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="neon"] .concept-box { border: var(--border); box-shadow: 0 0 18px rgba(56, 232, 255, 0.45), inset 0 0 18px rgba(56, 232, 255, 0.15); background: rgba(40, 14, 80, 0.55); padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="neon"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="neon"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="neon"] .figure-number { font-family: var(--font-display); font-weight: 800; color: var(--accent); text-shadow: 0 0 24px rgba(255, 62, 165, 0.7); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="neon"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="neon"] .timeline { border-left: 2px solid #ff3ea5; box-shadow: -6px 0 14px -6px #ff3ea5; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="neon"] .timeline time { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="neon"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="neon"] .compare-col { border: var(--border); box-shadow: 0 0 18px rgba(56, 232, 255, 0.45), inset 0 0 18px rgba(56, 232, 255, 0.15); background: rgba(40, 14, 80, 0.55);  }
+[data-theme="neon"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="neon"] .compare-right h2 { color: var(--accent); }
+[data-theme="neon"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="neon"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="neon"] .gallery figure { border: var(--border); }
+[data-theme="neon"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="neon"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; border: 2px solid #ff3ea5; font: 800 17px var(--font-display); text-transform: uppercase; letter-spacing: 0.14em; box-shadow: 0 0 18px rgba(255, 62, 165, 0.7);
+}
+[data-theme="neon"] .btn-cta:hover,
+[data-theme="neon"] .btn-cta:focus-visible { background: #38e8ff; color: #1a0b33; border-color: #38e8ff; box-shadow: 0 0 24px rgba(56, 232, 255, 0.8); }
+[data-theme="neon"] .progress { background: #1a0b33; color: #38e8ff; padding: 8px 16px; font: 700 14px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }

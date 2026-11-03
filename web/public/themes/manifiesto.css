@@ -1,0 +1,83 @@
+/* THEME: Manifiesto — mucho blanco y una frase enorme. */
+
+@font-face { font-family: 'Instrument Serif'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/instrument-serif-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Instrument Serif'; font-weight: 400; font-style: italic; font-display: swap; src: url(/fonts/instrument-serif-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="manifiesto"] {
+  --bg: #ffffff;
+  --fg: #111111;
+  --accent: #c8102e;
+  --accent-2: #111111;
+  --on-accent: #ffffff;
+  --muted: #555555;
+  --border: 1px solid #111111;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Barlow', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="manifiesto"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.65;
+  padding-top: clamp(48px, 9vw, 120px); padding-bottom: clamp(48px, 9vw, 120px);
+}
+[data-theme="manifiesto"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="manifiesto"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="manifiesto"] .slide-title,
+[data-theme="manifiesto"] .concept-term,
+[data-theme="manifiesto"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 400; text-transform: none; letter-spacing: -0.03em; line-height: 0.95;
+  margin: 0;
+}
+[data-theme="manifiesto"] .slide-title { font-size: clamp(56px, 17vw, 230px); font-size: clamp(56px, 17cqi, 230px);  }
+[data-theme="manifiesto"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="manifiesto"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="manifiesto"] mark { background: none; color: var(--accent); font-style: italic; }
+[data-theme="manifiesto"] strong { font-weight: 600; }
+
+/* Cita */
+[data-theme="manifiesto"] .slide-quote p { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em; line-height: 1; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="manifiesto"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="manifiesto"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="manifiesto"] .concept-box { border: 0; border-top: 1px solid #111; padding-left: 0 !important; padding-right: 0 !important; background: none; padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="manifiesto"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="manifiesto"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="manifiesto"] .figure-number { font-family: var(--font-display); font-weight: 400; color: #111; font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="manifiesto"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="manifiesto"] .timeline { border-left: 1px solid #111; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="manifiesto"] .timeline time { display: block; font-family: var(--font-display); font-weight: 400; font-style: italic; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="manifiesto"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="manifiesto"] .compare-col { border: 0; border-top: 1px solid #111; padding-left: 0 !important; padding-right: 0 !important; background: none;  }
+[data-theme="manifiesto"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="manifiesto"] .compare-right h2 { color: var(--accent); }
+[data-theme="manifiesto"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="manifiesto"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="manifiesto"] .gallery figure { border: 0; }
+[data-theme="manifiesto"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="manifiesto"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; background: transparent; color: #111; border-bottom: 2px solid #c8102e; padding: 0 2px; font: 600 18px var(--font-body); text-transform: uppercase; letter-spacing: 0.16em; min-height: 48px;
+}
+[data-theme="manifiesto"] .btn-cta:hover,
+[data-theme="manifiesto"] .btn-cta:focus-visible { color: #c8102e; background: transparent; }
+[data-theme="manifiesto"] .progress { background: #fff; color: #555; padding: 8px 16px; font: 600 14px var(--font-body); letter-spacing: 0.2em; }

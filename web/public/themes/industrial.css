@@ -1,0 +1,87 @@
+/* THEME: Industrial — amarillo y negro con rayas de advertencia. */
+
+@font-face { font-family: 'Big Shoulders Display'; font-weight: 800; font-style: normal; font-display: swap; src: url(/fonts/big-shoulders-display-latin-800-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Big Shoulders Display'; font-weight: 900; font-style: normal; font-display: swap; src: url(/fonts/big-shoulders-display-latin-900-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="industrial"] {
+  --bg: #151515;
+  --fg: #f2f2f2;
+  --accent: #f7c900;
+  --accent-2: #ffffff;
+  --on-accent: #151515;
+  --muted: #c4c4c4;
+  --border: 3px solid #f7c900;
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Barlow', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="industrial"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  padding-top: calc(var(--gutter) + 22px);
+}
+[data-theme="industrial"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="industrial"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="industrial"] .slide-title,
+[data-theme="industrial"] .concept-term,
+[data-theme="industrial"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 900; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.9;
+  margin: 0;
+}
+[data-theme="industrial"] .slide-title { font-size: clamp(52px, 14vw, 190px); font-size: clamp(52px, 14cqi, 190px);  }
+[data-theme="industrial"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="industrial"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="industrial"] mark { background: #f7c900; color: #151515; padding: 0 0.2em; font-weight: 700; }
+[data-theme="industrial"] strong { font-weight: 700; }
+
+/* Cita */
+[data-theme="industrial"] .slide-quote p { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; line-height: 1; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="industrial"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="industrial"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="industrial"] .concept-box { border: var(--border); background: #222; padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="industrial"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="industrial"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="industrial"] .figure-number { font-family: var(--font-display); font-weight: 900; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="industrial"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="industrial"] .timeline { border-left: 8px solid #f7c900; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="industrial"] .timeline time { display: block; font-family: var(--font-display); font-weight: 900; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="industrial"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="industrial"] .compare-col { border: var(--border); background: #222;  }
+[data-theme="industrial"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="industrial"] .compare-right h2 { color: var(--accent); }
+[data-theme="industrial"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="industrial"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="industrial"] .gallery figure { border: var(--border); }
+[data-theme="industrial"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="industrial"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; font: 900 22px var(--font-display); text-transform: uppercase; letter-spacing: 0.1em; background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.12) 0 10px, transparent 10px 20px);
+}
+[data-theme="industrial"] .btn-cta:hover,
+[data-theme="industrial"] .btn-cta:focus-visible { background-color: #fff; color: #151515; }
+[data-theme="industrial"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="industrial"] .slide::before, [data-theme="industrial"] .slide::after { content: ''; position: absolute; left: 0; right: 0; height: 14px; background: repeating-linear-gradient(135deg, #f7c900 0 16px, #151515 16px 32px); }
+[data-theme="industrial"] .slide::before { top: 0; }
+[data-theme="industrial"] .slide::after { bottom: 0; }

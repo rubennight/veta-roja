@@ -1,0 +1,87 @@
+/* THEME: Pop-art — puntos de trama, amarillo y rosa, citas en globos. */
+
+@font-face { font-family: 'Bowlby One'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/bowlby-one-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Barlow'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/barlow-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="pop-art"] {
+  --bg: #ffe14a;
+  --fg: #111111;
+  --accent: #e6007e;
+  --accent-2: #111111;
+  --on-accent: #ffffff;
+  --muted: #3a3320;
+  --border: 4px solid #111111;
+  --font-display: 'Bowlby One', 'Arial Black', Impact, sans-serif;
+  --font-body: 'Barlow', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="pop-art"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  background-image: radial-gradient(#ff7ab8 22%, transparent 24%); background-size: 22px 22px;
+}
+[data-theme="pop-art"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="pop-art"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="pop-art"] .slide-title,
+[data-theme="pop-art"] .concept-term,
+[data-theme="pop-art"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; line-height: 1;
+  margin: 0;
+}
+[data-theme="pop-art"] .slide-title { font-size: clamp(38px, 10vw, 130px); font-size: clamp(38px, 10cqi, 130px); text-shadow: 4px 4px 0 #ffffff, 7px 7px 0 #111; }
+[data-theme="pop-art"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="pop-art"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="pop-art"] mark { background: #e6007e; color: #fff; padding: 0 0.2em; font-weight: 600; }
+[data-theme="pop-art"] strong { font-weight: 600; }
+
+/* Cita */
+[data-theme="pop-art"] .slide-quote p { font-family: var(--font-display); font-weight: 400; line-height: 1.1; background: #fff; border: 4px solid #111; border-radius: 28px; padding: 0.6em 0.8em; position: relative; box-shadow: 6px 6px 0 #111; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="pop-art"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="pop-art"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="pop-art"] .concept-box { border: var(--border); box-shadow: 8px 8px 0 #111; background: #fff; padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="pop-art"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="pop-art"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="pop-art"] .figure-number { font-family: var(--font-display); font-weight: 400; color: var(--accent); text-shadow: 5px 5px 0 #111; font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="pop-art"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="pop-art"] .timeline { border-left: 8px solid #111; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="pop-art"] .timeline time { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="pop-art"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="pop-art"] .compare-col { border: var(--border); box-shadow: 8px 8px 0 #111; background: #fff;  }
+[data-theme="pop-art"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="pop-art"] .compare-right h2 { color: var(--accent); }
+[data-theme="pop-art"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="pop-art"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="pop-art"] .gallery figure { border: 4px solid #111; box-shadow: 6px 6px 0 #111; background: #fff; }
+[data-theme="pop-art"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="pop-art"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 999px; border: 4px solid #111; box-shadow: 5px 5px 0 #111; font: 400 20px var(--font-display); text-transform: uppercase; letter-spacing: 0.04em;
+}
+[data-theme="pop-art"] .btn-cta:hover,
+[data-theme="pop-art"] .btn-cta:focus-visible { background: #111; color: #ffe14a; }
+[data-theme="pop-art"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="pop-art"] .slide-quote blockquote, [data-theme="pop-art"] .slide-quote { overflow: visible; }
+[data-theme="pop-art"] .slide-quote p { font-size: clamp(26px, 5cqi, 68px); }
+[data-theme="pop-art"] .slide-quote footer { margin-top: 1.4em; }
+[data-theme="pop-art"] .compare-col h2 { background: #fff; }

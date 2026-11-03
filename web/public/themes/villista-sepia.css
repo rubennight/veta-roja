@@ -1,0 +1,88 @@
+/* THEME: Villista sepia — foto antigua de 1914, bordes quemados y tipografía de imprenta vieja. */
+
+@font-face { font-family: 'Old Standard TT'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/old-standard-tt-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Old Standard TT'; font-weight: 400; font-style: italic; font-display: swap; src: url(/fonts/old-standard-tt-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Old Standard TT'; font-weight: 700; font-style: normal; font-display: swap; src: url(/fonts/old-standard-tt-latin-700-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/source-serif-4-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 400; font-style: italic; font-display: swap; src: url(/fonts/source-serif-4-latin-400-italic.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-weight: 700; font-style: normal; font-display: swap; src: url(/fonts/source-serif-4-latin-700-normal.woff2) format('woff2'); }
+
+[data-theme="villista-sepia"] {
+  --bg: #e4d0a8;
+  --fg: #2b1d10;
+  --accent: #8b2b14;
+  --accent-2: #5c3b1e;
+  --on-accent: #f3e6c8;
+  --muted: #55402a;
+  --border: 2px solid #5c3b1e;
+  --font-display: 'Old Standard TT', Georgia, serif;
+  --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+}
+
+[data-theme="villista-sepia"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.6;
+  box-shadow: inset 0 0 140px 30px rgba(70, 35, 10, 0.55); background-image: radial-gradient(ellipse at center, rgba(255, 245, 220, 0.5), transparent 70%);
+}
+[data-theme="villista-sepia"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="villista-sepia"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="villista-sepia"] .slide-title,
+[data-theme="villista-sepia"] .concept-term,
+[data-theme="villista-sepia"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; line-height: 1.02;
+  margin: 0;
+}
+[data-theme="villista-sepia"] .slide-title { font-size: clamp(38px, 9vw, 120px); font-size: clamp(38px, 9cqi, 120px);  }
+[data-theme="villista-sepia"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="villista-sepia"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="villista-sepia"] mark { background: rgba(139, 43, 20, 0.18); color: #6e1f0d; font-weight: 700; }
+[data-theme="villista-sepia"] strong { font-weight: 700; }
+
+/* Cita */
+[data-theme="villista-sepia"] .slide-quote p { font-family: var(--font-display); font-weight: 400; font-style: italic; line-height: 1.15; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="villista-sepia"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="villista-sepia"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="villista-sepia"] .concept-box { border: 6px double #5c3b1e; background: rgba(243, 230, 200, 0.55); padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="villista-sepia"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="villista-sepia"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="villista-sepia"] .figure-number { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="villista-sepia"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); font-style: italic; letter-spacing: 0.04em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="villista-sepia"] .timeline { border-left: 3px double #5c3b1e; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="villista-sepia"] .timeline time { display: block; font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="villista-sepia"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="villista-sepia"] .compare-col { border: 6px double #5c3b1e; background: rgba(243, 230, 200, 0.55);  }
+[data-theme="villista-sepia"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="villista-sepia"] .compare-right h2 { color: var(--accent); }
+[data-theme="villista-sepia"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="villista-sepia"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="villista-sepia"] .gallery figure { border: 10px solid #f3e6c8; box-shadow: 0 6px 18px rgba(70, 35, 10, 0.5); }
+[data-theme="villista-sepia"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; font-style: italic; letter-spacing: 0.03em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="villista-sepia"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 2px; border: 2px solid #3a2410; font: 700 19px var(--font-display); text-transform: uppercase; letter-spacing: 0.12em;
+}
+[data-theme="villista-sepia"] .btn-cta:hover,
+[data-theme="villista-sepia"] .btn-cta:focus-visible { background: #3a2410; color: #f3e6c8; }
+[data-theme="villista-sepia"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="villista-sepia"] .gallery img { filter: sepia(1) contrast(1.05) brightness(0.95); }
+[data-theme="villista-sepia"] .slide-quote cite { font-style: italic; }

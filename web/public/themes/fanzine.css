@@ -1,0 +1,88 @@
+/* THEME: Fanzine — collage de fotocopia, recortes y cinta. */
+
+@font-face { font-family: 'Special Elite'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/special-elite-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="fanzine"] {
+  --bg: #e9e7e2;
+  --fg: #111111;
+  --accent: #d00000;
+  --accent-2: #111111;
+  --on-accent: #ffffff;
+  --muted: #3d3d3a;
+  --border: 2px solid #111111;
+  --font-display: 'Special Elite', 'Courier New', monospace;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+[data-theme="fanzine"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.7;
+  background-image: radial-gradient(rgba(0,0,0,0.10) 1px, transparent 1.4px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 5px 5px, 40px 40px;
+}
+[data-theme="fanzine"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="fanzine"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="fanzine"] .slide-title,
+[data-theme="fanzine"] .concept-term,
+[data-theme="fanzine"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 400; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.05;
+  margin: 0;
+}
+[data-theme="fanzine"] .slide-title { font-size: clamp(34px, 9vw, 112px); font-size: clamp(34px, 9cqi, 112px); display: inline-block; background: #111; color: #e9e7e2; padding: 0.08em 0.3em; rotate: -1.5deg; }
+[data-theme="fanzine"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="fanzine"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="fanzine"] mark { background: #d00000; color: #fff; padding: 0 0.2em; font-weight: 600; }
+[data-theme="fanzine"] strong { font-weight: 600; background: rgba(255, 235, 59, 0.6); }
+
+/* Cita */
+[data-theme="fanzine"] .slide-quote p { font-family: var(--font-display); font-weight: 400; line-height: 1.2; background: #fffdf5; border: 2px solid #111; padding: 0.7em 0.9em; rotate: 0.8deg; box-shadow: 4px 4px 0 rgba(0,0,0,0.85); font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="fanzine"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="fanzine"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="fanzine"] .concept-box { border: var(--border); background: #fffdf5; box-shadow: 4px 4px 0 rgba(0,0,0,0.85); padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px); rotate: -1.2deg; }
+[data-theme="fanzine"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="fanzine"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="fanzine"] .figure-number { font-family: var(--font-display); font-weight: 400; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="fanzine"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="fanzine"] .timeline { border-left: 3px dashed #111; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="fanzine"] .timeline time { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="fanzine"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="fanzine"] .compare-col { border: var(--border); background: #fffdf5; box-shadow: 4px 4px 0 rgba(0,0,0,0.85);  }
+[data-theme="fanzine"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="fanzine"] .compare-right h2 { color: var(--accent); }
+[data-theme="fanzine"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="fanzine"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="fanzine"] .gallery figure { border: 8px solid #fffdf5; box-shadow: 3px 3px 8px rgba(0,0,0,0.5); rotate: 1deg; }
+[data-theme="fanzine"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="fanzine"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; border: 2px solid #111; box-shadow: 4px 4px 0 #111; font: 400 19px var(--font-display); text-transform: uppercase; letter-spacing: 0.08em;
+}
+[data-theme="fanzine"] .btn-cta:hover,
+[data-theme="fanzine"] .btn-cta:focus-visible { background: #111; color: #e9e7e2; }
+[data-theme="fanzine"] .progress { background: var(--bg); color: var(--accent-2); padding: 8px 16px; font: 700 15px var(--font-display); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
+
+[data-theme="fanzine"] .gallery img { filter: grayscale(1) contrast(1.5); }
+[data-theme="fanzine"] .concept-box::before { content: ''; position: absolute; top: -14px; left: 40%; width: 90px; height: 26px; background: rgba(255, 224, 80, 0.75); rotate: -4deg; }
+[data-theme="fanzine"] .concept-box { position: relative; }
+[data-theme="fanzine"] .slide-quote p { position: relative; }
+[data-theme="fanzine"] .slide-quote p::before { content: ''; position: absolute; top: -14px; right: 12%; width: 80px; height: 24px; background: rgba(255, 224, 80, 0.75); rotate: 5deg; }

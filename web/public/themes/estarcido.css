@@ -1,0 +1,82 @@
+/* THEME: Estarcido — verde oliva, letra de plantilla y textura de muro. */
+
+@font-face { font-family: 'Allerta Stencil'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/allerta-stencil-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-style: normal; font-display: swap; src: url(/fonts/ibm-plex-mono-latin-600-normal.woff2) format('woff2'); }
+
+[data-theme="estarcido"] {
+  --bg: #4a5030;
+  --fg: #f0ead2;
+  --accent: #f0c94a;
+  --accent-2: #f0ead2;
+  --on-accent: #2c3019;
+  --muted: #d6d0b0;
+  --border: 3px dashed #f0ead2;
+  --font-display: 'Allerta Stencil', Impact, sans-serif;
+  --font-body: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+[data-theme="estarcido"] .slide {
+  font-size: clamp(17px, 1.4vw + 10px, 22px); font-size: clamp(17px, 1.4cqi + 10px, 22px);
+  line-height: 1.7;
+  background-image: radial-gradient(rgba(0,0,0,0.12) 1px, transparent 1.5px), radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1.5px); background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 4px;
+}
+[data-theme="estarcido"] ::selection { background: var(--accent); color: var(--on-accent); }
+[data-theme="estarcido"] :focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+
+[data-theme="estarcido"] .slide-title,
+[data-theme="estarcido"] .concept-term,
+[data-theme="estarcido"] .compare-col h2 {
+  font-family: var(--font-display);
+  font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1;
+  margin: 0;
+}
+[data-theme="estarcido"] .slide-title { font-size: clamp(36px, 9vw, 120px); font-size: clamp(36px, 9cqi, 120px);  }
+[data-theme="estarcido"] .slide-subtitle { font-size: clamp(18px, 2.4vw, 30px); font-size: clamp(18px, 2.4cqi, 30px); color: var(--accent-2); margin: 0.9em 0 0; max-width: 36ch;  }
+[data-theme="estarcido"] .slide-text { font-size: clamp(20px, 2.8vw, 34px); font-size: clamp(20px, 2.8cqi, 34px); line-height: 1.4; margin: 0 0 1.2em; max-width: 40ch;  }
+
+[data-theme="estarcido"] mark { background: #f0c94a; color: #2c3019; padding: 0 0.2em; font-weight: 600; }
+[data-theme="estarcido"] strong { font-weight: 600; }
+
+/* Cita */
+[data-theme="estarcido"] .slide-quote p { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; line-height: 1.12; font-size: clamp(30px, 6.2vw, 86px); font-size: clamp(30px, 6.2cqi, 86px); margin: 0 0 0.6em; }
+[data-theme="estarcido"] .slide-quote footer { font-size: 15px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-2); }
+[data-theme="estarcido"] .slide-quote cite { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* Concepto */
+[data-theme="estarcido"] .concept-box { border: var(--border); background: rgba(0, 0, 0, 0.14); padding: clamp(18px, 3vw, 40px); padding: clamp(18px, 3cqi, 40px);  }
+[data-theme="estarcido"] .concept-term { font-size: clamp(32px, 6vw, 78px); font-size: clamp(32px, 6cqi, 78px); color: var(--accent); }
+[data-theme="estarcido"] .concept-definition { margin: 0.7em 0 0; font-size: clamp(18px, 2.2vw, 28px); font-size: clamp(18px, 2.2cqi, 28px); max-width: 44ch; }
+
+/* Cifra */
+[data-theme="estarcido"] .figure-number { font-family: var(--font-display); font-weight: 400; color: var(--accent); font-size: clamp(72px, 21vw, 290px); font-size: clamp(72px, 21cqi, 290px); line-height: 0.85; margin: 0; }
+[data-theme="estarcido"] .figure-caption { font-size: clamp(16px, 2vw, 26px); font-size: clamp(16px, 2cqi, 26px); text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); margin: 0.7em 0 0; border-top: var(--border); padding-top: 0.7em; }
+
+/* Línea de tiempo */
+[data-theme="estarcido"] .timeline { border-left: 3px dashed #f0c94a; padding-left: clamp(18px, 3vw, 40px); padding-left: clamp(18px, 3cqi, 40px); }
+[data-theme="estarcido"] .timeline time { display: block; font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 4.4vw, 54px); font-size: clamp(28px, 4.4cqi, 54px); color: var(--accent); line-height: 1.05; }
+[data-theme="estarcido"] .timeline p { margin: 0.3em 0 0; max-width: 46ch; }
+
+/* Comparación */
+[data-theme="estarcido"] .compare-col { border: var(--border); background: rgba(0, 0, 0, 0.14);  }
+[data-theme="estarcido"] .compare-col h2 { font-size: clamp(24px, 4vw, 50px); font-size: clamp(24px, 4cqi, 50px); padding: 0.5em 0.7em; border-bottom: var(--border); color: var(--accent-2); }
+[data-theme="estarcido"] .compare-right h2 { color: var(--accent); }
+[data-theme="estarcido"] .compare-col ul { padding: 1em 1.2em 1em 2.2em; }
+[data-theme="estarcido"] .compare-col li { margin-bottom: 0.5em; }
+
+/* Galería */
+[data-theme="estarcido"] .gallery figure { border: var(--border); }
+[data-theme="estarcido"] .gallery figcaption { padding: 0.6em 0.8em; font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-2); border-top: var(--border); }
+
+/* Botón y progreso */
+[data-theme="estarcido"] .btn-cta {
+  min-height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 0;
+  border-radius: 0; font: 400 20px var(--font-display); text-transform: uppercase; letter-spacing: 0.12em;
+}
+[data-theme="estarcido"] .btn-cta:hover,
+[data-theme="estarcido"] .btn-cta:focus-visible { background: #f0ead2; color: #2c3019; }
+[data-theme="estarcido"] .progress { background: #3b4026; color: #f0ead2; padding: 8px 16px; font: 600 14px var(--font-body); letter-spacing: 0.16em; border-top: var(--border); border-left: var(--border); }
