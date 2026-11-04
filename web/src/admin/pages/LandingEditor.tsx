@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { LandingInputSchema, THEMES, normalizeSlug } from '@veta-roja/shared';
 import type { ZodIssue } from 'zod';
-import { ApiError, api } from '../api';
+import { ApiError, api, type Group } from '../api';
 import { editorReducer, emptyState, stateFromLanding, toInput } from '../editorState';
 import { SelectField, TextField } from '../components/fields';
 import { SlideList } from '../components/SlideList';
@@ -15,6 +15,7 @@ const FIELD_NAMES: Record<string, string> = {
   slug: 'Dirección',
   themeId: 'Theme',
   ctaUrl: 'Enlace del botón',
+  groupId: 'Grupo',
 };
 
 function describeIssue(issue: ZodIssue): string {
@@ -39,6 +40,7 @@ export function LandingEditor() {
   const [landingId, setLandingId] = useState<string | null>(params.id && params.id !== 'new' ? params.id : null);
   const [loaded, setLoaded] = useState(params.id === 'new');
   const [defaultCtaUrl, setDefaultCtaUrl] = useState<string | null>(null);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -69,6 +71,13 @@ export function LandingEditor() {
       .getDefaultCtaUrl()
       .then((r) => setDefaultCtaUrl(r.url))
       .catch(() => setDefaultCtaUrl(null));
+  }, []);
+
+  useEffect(() => {
+    api
+      .listGroups()
+      .then(setGroups)
+      .catch(() => setGroups([]));
   }, []);
 
   // Cualquier cambio quita el "Guardado" anterior.
@@ -136,6 +145,12 @@ export function LandingEditor() {
               value={state.themeId}
               options={THEMES.map((t) => ({ value: t.id, label: t.name }))}
               onChange={(value) => dispatch({ type: 'setField', field: 'themeId', value })}
+            />
+            <SelectField
+              label="Grupo"
+              value={state.groupId}
+              options={[{ value: '', label: 'Sin grupo' }, ...groups.map((g) => ({ value: g.id, label: g.name }))]}
+              onChange={(value) => dispatch({ type: 'setField', field: 'groupId', value })}
             />
             <SelectField
               label="Estado"

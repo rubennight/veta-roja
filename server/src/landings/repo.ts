@@ -1,10 +1,11 @@
 import { eq } from 'drizzle-orm';
 import type { LandingInput } from '@veta-roja/shared';
 import type { Db } from '../db/client';
-import { landings, slugRedirects } from '../db/schema';
+import { landingGroups, landings, slugRedirects } from '../db/schema';
+import { GroupNotFoundError } from './groups';
 
 export type Landing = typeof landings.$inferSelect;
-export type LandingSummary = Pick<Landing, 'id' | 'slug' | 'title' | 'themeId' | 'status' | 'updatedAt'>;
+export type LandingSummary = Pick<Landing, 'id' | 'slug' | 'title' | 'themeId' | 'status' | 'groupId' | 'updatedAt'>;
 
 export class SlugTakenError extends Error {
   constructor(public slug: string) {
@@ -25,9 +26,16 @@ async function assertSlugFree(tx: Tx | Db, slug: string, ownId?: string): Promis
   if (redirect && redirect.landingId !== ownId) throw new SlugTakenError(slug);
 }
 
+async function assertGroupExists(tx: Tx | Db, groupId: string | null | undefined): Promise<void> {
+  if (!groupId) return;
+  const [found] = await tx.select({ id: landingGroups.id }).from(landingGroups).where(eq(landingGroups.id, groupId));
+  if (!found) throw new GroupNotFoundError();
+}
+
 export async function createLanding(db: Db, input: LandingInput): Promise<Landing> {
   return db.transaction(async (tx) => {
     await assertSlugFree(tx, input.slug);
+    await assertGroupExists(tx, input.groupId);
     const [row] = await tx.insert(landings).values(input).returning();
     return row;
   });
@@ -46,6 +54,7 @@ export async function listLandings(db: Db): Promise<LandingSummary[]> {
       title: landings.title,
       themeId: landings.themeId,
       status: landings.status,
+      groupId: landings.groupId,
       updatedAt: landings.updatedAt,
     })
     .from(landings)
@@ -57,6 +66,7 @@ export async function updateLanding(db: Db, id: string, input: LandingInput): Pr
   return db.transaction(async (tx) => {
     const [current] = await tx.select().from(landings).where(eq(landings.id, id));
     if (!current) return null;
+    await assertGroupExists(tx, input.groupId);
     if (input.slug !== current.slug) {
       await assertSlugFree(tx, input.slug, id);
       await tx.delete(slugRedirects).where(eq(slugRedirects.oldSlug, input.slug));

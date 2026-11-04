@@ -11,6 +11,8 @@ export interface EditorState {
   status: 'draft' | 'published';
   /** Texto del formulario; vacío significa "usar el enlace por defecto". */
   ctaUrl: string;
+  /** Id del grupo; vacío significa "sin grupo". */
+  groupId: string;
   slides: Slide[];
 }
 
@@ -39,7 +41,7 @@ export const ANIMATION_LABELS: Record<string, string> = {
 };
 
 export function emptyState(): EditorState {
-  return { title: '', description: '', slug: '', slugTouched: false, themeId: 'indice-blanco', status: 'draft', ctaUrl: '', slides: [] };
+  return { title: '', description: '', slug: '', slugTouched: false, themeId: 'indice-blanco', status: 'draft', ctaUrl: '', groupId: '', slides: [] };
 }
 
 export function stateFromLanding(l: Landing): EditorState {
@@ -51,6 +53,7 @@ export function stateFromLanding(l: Landing): EditorState {
     themeId: l.themeId,
     status: l.status,
     ctaUrl: l.ctaUrl ?? '',
+    groupId: l.groupId ?? '',
     slides: l.slides,
   };
 }
@@ -98,7 +101,7 @@ export type EditorAction =
   | { type: 'load'; state: EditorState }
   | { type: 'setTitle'; value: string }
   | { type: 'setSlug'; value: string }
-  | { type: 'setField'; field: 'description' | 'themeId' | 'status' | 'ctaUrl'; value: string }
+  | { type: 'setField'; field: 'description' | 'themeId' | 'status' | 'ctaUrl' | 'groupId'; value: string }
   | { type: 'addSlide'; slideType: SlideType }
   | { type: 'updateSlide'; id: string; patch: Partial<Slide> }
   | { type: 'moveSlide'; id: string; direction: -1 | 1 }
@@ -163,5 +166,6 @@ export function toInput(state: EditorState) {
     status: state.status,
     slides,
     ctaUrl: cta === '' ? null : cta,
+    groupId: state.groupId === '' ? null : state.groupId,
   };
 }

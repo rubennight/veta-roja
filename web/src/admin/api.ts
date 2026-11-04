@@ -15,10 +15,18 @@ export interface LandingSummary {
   title: string;
   themeId: string;
   status: 'draft' | 'published';
+  groupId: string | null;
   updatedAt: string;
 }
 
-export interface Landing extends LandingSummary, Omit<LandingInput, 'slug' | 'title' | 'themeId' | 'status'> {}
+export interface Landing extends LandingSummary, Omit<LandingInput, 'slug' | 'title' | 'themeId' | 'status' | 'groupId'> {}
+
+export interface Group {
+  id: string;
+  name: string;
+  landingCount: number;
+  createdAt: string;
+}
 
 export interface UploadedImage {
   id: string;
@@ -60,7 +68,12 @@ export const api = {
   updateLanding: (id: string, input: LandingInput) => request<Landing>('PUT', `/api/admin/landings/${id}`, input),
   deleteLanding: (id: string) => request<void>('DELETE', `/api/admin/landings/${id}`),
 
-  getDefaultCtaUrl: () => request<{ url: string | null }>('GET', '/api/admin/settings/default-cta-url'),
+  listGroups: () => request<Group[]>('GET', '/api/admin/groups'),
+  createGroup: (name: string) => request<Group>('POST', '/api/admin/groups', { name }),
+  renameGroup: (id: string, name: string) => request<Group>('PUT', `/api/admin/groups/${id}`, { name }),
+  deleteGroup: (id: string) => request<void>('DELETE', `/api/admin/groups/${id}`),
+
+  getDefaultCtaUrl:() => request<{ url: string | null }>('GET', '/api/admin/settings/default-cta-url'),
   setDefaultCtaUrl: (url: string | null) => request<{ url: string | null }>('PUT', '/api/admin/settings/default-cta-url', { url }),
 
   uploadImage: (file: File) => {

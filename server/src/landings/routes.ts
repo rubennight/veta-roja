@@ -1,6 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
-import { LandingInputSchema, isAllowedCtaUrl } from '@veta-roja/shared';
+import { GroupInputSchema, LandingInputSchema, isAllowedCtaUrl } from '@veta-roja/shared';
+import {
+  GroupNameTakenError,
+  GroupNotFoundError,
+  createGroup,
+  deleteGroup,
+  listGroups,
+  renameGroup,
+} from './groups';
 import { SlugTakenError, createLanding, deleteLanding, getLanding, listLandings, updateLanding } from './repo';
 import { getDefaultCtaUrl, setDefaultCtaUrl } from './settings';
 
@@ -13,9 +21,10 @@ export async function registerLandingRoutes(app: FastifyInstance): Promise<void>
   const guard = { preHandler: app.requireAdmin };
 
   app.setErrorHandler((err, _req, reply) => {
-    if (err instanceof SlugTakenError) return reply.code(409).send({ error: err.message });
+    if (err instanceof SlugTakenError || err instanceof GroupNameTakenError) return reply.code(409).send({ error: err.message });
+    if (err instanceof GroupNotFoundError) return reply.code(400).send({ error: err.message });
     const status = (err as { statusCode?: number }).statusCode;
-    if (status && status < 500) return reply.code(status).send({ error: err.message });
+    if (status && status < 500) return reply.code(status).send({ error: (err as Error).message });
     app.log.error(err);
     return reply.code(500).send({ error: 'Error interno' });
   });
@@ -47,6 +56,29 @@ export async function registerLandingRoutes(app: FastifyInstance): Promise<void>
     const params = IdParam.safeParse(req.params);
     const removed = params.success ? await deleteLanding(app.db, params.data.id) : false;
     return removed ? reply.code(204).send() : reply.code(404).send({ error: 'No encontrada' });
+  });
+
+  app.get('/api/admin/groups', guard, async () => listGroups(app.db));
+
+  app.post('/api/admin/groups', guard, async (req, reply) => {
+    const parsed = GroupInputSchema.safeParse(req.body);
+    if (!parsed.success) return reply.code(400).send({ error: 'Nombre de grupo no válido', issues: parsed.error.issues });
+    return reply.code(201).send({ ...(await createGroup(app.db, parsed.data.name)), landingCount: 0 });
+  });
+
+  app.put('/api/admin/groups/:id', guard, async (req, reply) => {
+    const params = IdParam.safeParse(req.params);
+    if (!params.success) return reply.code(404).send({ error: 'No encontrado' });
+    const parsed = GroupInputSchema.safeParse(req.body);
+    if (!parsed.success) return reply.code(400).send({ error: 'Nombre de grupo no válido', issues: parsed.error.issues });
+    const renamed = await renameGroup(app.db, params.data.id, parsed.data.name);
+    return renamed ?? reply.code(404).send({ error: 'No encontrado' });
+  });
+
+  app.delete('/api/admin/groups/:id', guard, async (req, reply) => {
+    const params = IdParam.safeParse(req.params);
+    const removed = params.success ? await deleteGroup(app.db, params.data.id) : false;
+    return removed ? reply.code(204).send() : reply.code(404).send({ error: 'No encontrado' });
   });
 
   app.get('/api/admin/settings/default-cta-url', guard, async () => ({ url: await getDefaultCtaUrl(app.db) }));

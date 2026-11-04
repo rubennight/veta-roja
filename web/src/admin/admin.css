@@ -56,6 +56,17 @@ textarea { min-height: 110px; resize: vertical; }
 .admin-table th, .admin-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #ccc; vertical-align: middle; }
 .admin-table th { text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px; border-bottom: var(--a-border); }
 .admin-table .actions { display: flex; gap: 8px; justify-content: flex-end; }
+.list-tools { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin-bottom: 16px; }
+.list-tools .field { min-width: 180px; flex: 1 1 180px; }
+.group-new { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 28px; }
+.group-new .field { min-width: 240px; flex: 1 1 240px; max-width: 420px; }
+.group-section { margin-bottom: 28px; }
+.group-section summary { cursor: pointer; padding: 8px 0; list-style-position: inside; }
+.group-section summary h2 { display: inline; font-size: 20px; margin: 0; }
+.group-count { color: var(--a-muted); font-weight: 400; }
+.group-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+.group-empty { margin: 0; padding: 16px; border: var(--a-border); color: var(--a-muted); }
+.row-group { max-width: 180px; }
 .pill { display: inline-block; padding: 2px 10px; border: 2px solid var(--a-fg); font-size: 12px; font-weight: 600; text-transform: uppercase; }
 .pill.published { background: var(--a-fg); color: var(--a-bg); }
 .pill.draft { color: var(--a-muted); border-color: var(--a-muted); }

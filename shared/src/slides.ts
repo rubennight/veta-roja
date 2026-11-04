@@ -73,6 +73,8 @@ export const LandingInputSchema = z.object({
   status: z.enum(['draft', 'published']),
   slides: z.array(SlideSchema).max(MAX_SLIDES),
   ctaUrl: z.string().refine(isAllowedCtaUrl, 'El enlace debe ser https de WhatsApp').nullable(),
+  /** Grupo del panel. Omitido = no cambiar (al crear: sin grupo); null = sin grupo. */
+  groupId: z.uuid().nullable().optional(),
 }).superRefine((landing, ctx) => {
   // Un botón hacia otra diapositiva solo sirve si esa diapositiva existe y se publica (no está oculta).
   const published = new Set(landing.slides.filter((s) => !s.hidden).map((s) => s.id));
@@ -90,3 +92,7 @@ export const LandingInputSchema = z.object({
   });
 });
 export type LandingInput = z.infer<typeof LandingInputSchema>;
+
+export const MAX_GROUP_NAME = 60;
+export const GroupInputSchema = z.object({ name: z.string().trim().min(1).max(MAX_GROUP_NAME) });
+export type GroupInput = z.infer<typeof GroupInputSchema>;
