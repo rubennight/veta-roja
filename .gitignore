@@ -6,3 +6,6 @@ dist
 *.log
 .pgdata
 CLAUDE.md
+
+# Superpowers (specs, planes y mockups generados)
+docs/superpowers/
